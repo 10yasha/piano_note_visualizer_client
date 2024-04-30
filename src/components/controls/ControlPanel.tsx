@@ -8,7 +8,7 @@ function ControlPanel({
   duration,
   currentTime,
 }: {
-  play: boolean;
+  play: React.MouseEventHandler<HTMLDivElement>;
   isPlaying: boolean;
   duration: number;
   currentTime: number;
@@ -17,23 +17,26 @@ function ControlPanel({
     if (!seconds) return "00m 00s";
 
     let duration = seconds;
-    let hours: any = duration / 3600;
+    let hours = duration / 3600;
     duration = duration % 3600;
 
-    let min: any = Math.round(duration / 60);
+    let min = Math.floor(duration / 60);
     duration = duration % 60;
 
-    let sec: any = Math.round(duration);
+    let sec = Math.floor(duration);
 
+    // add 0's to fill in timestamp (ex. 00m 12s)
+    let display_sec = sec.toString();
+    let display_min = min.toString();
     if (sec < 10) {
-      sec = `0${sec}`;
+      display_sec = `0${sec}`;
     }
     if (min < 10) {
-      min = `0${min}`;
+      display_min = `0${min}`;
     }
 
-    if (parseInt(hours, 10) > 0) {
-      return `${parseInt(hours, 10)}h ${min}m ${sec}s`;
+    if (Math.floor(hours) > 0) {
+      return `${Math.floor(hours)}h ${display_min}m ${display_sec}s`;
     } else if (min == 0) {
       return `00m ${sec}s`;
     } else {

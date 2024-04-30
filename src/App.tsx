@@ -1,39 +1,41 @@
 import { useState, useRef } from "react";
-import song from "./../example/FFXIII Sabers Edge.mp3";
+import starter_song from "./../example/FFXIII Sabers Edge.mp3";
 import Slider from "./components/slider/Slider";
 import ControlPanel from "./components/controls/ControlPanel";
 import MidiParser from "midi-parser-js";
 
 function App() {
-  const [percentage, setPercentage] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [duration, setDuration] = useState(0);
-  const [currentTime, setCurrentTime] = useState(0);
+  const [percentage, setPercentage] = useState<number>(0);
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [duration, setDuration] = useState<number>(0);
+  const [currentTime, setCurrentTime] = useState<number>(0);
 
-  const audioRef = useRef();
+  const audioRef = useRef<HTMLAudioElement>(null);
 
-  const onChange = (e) => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const audio = audioRef.current;
-    audio.currentTime = (audio.duration / 100) * e.target.value;
-    setPercentage(e.target.value);
+    if (audio) {
+      audio.currentTime = (audio.duration / 100) * e.target.valueAsNumber;
+      setPercentage(e.target.valueAsNumber);
+    }
   };
 
   const play = () => {
     const audio = audioRef.current;
-    audio.volume = 0.1;
+    if (audio) {
+      audio.volume = 0.1;
 
-    if (!isPlaying) {
-      setIsPlaying(true);
-      audio.play();
-    }
-
-    if (isPlaying) {
-      setIsPlaying(false);
-      audio.pause();
+      if (!isPlaying) {
+        setIsPlaying(true);
+        audio.play();
+      } else {
+        setIsPlaying(false);
+        audio.pause();
+      }
     }
   };
 
-  const getCurrDuration = (e) => {
+  const getCurDuration = (e: React.ChangeEvent<HTMLAudioElement>) => {
     const percent = (
       (e.currentTarget.currentTime / e.currentTarget.duration) *
       100
@@ -41,20 +43,20 @@ function App() {
     const time = e.currentTarget.currentTime;
 
     setPercentage(+percent);
-    setCurrentTime(time.toFixed(2));
+    setCurrentTime(parseFloat(time.toFixed(2)));
   };
 
   return (
     <div className="app-container">
-      <h1>Audio Player</h1>
+      <h1>{starter_song}</h1>
       <Slider percentage={percentage} onChange={onChange} />
       <audio
         ref={audioRef}
-        onTimeUpdate={getCurrDuration}
+        onTimeUpdate={getCurDuration}
         onLoadedData={(e) => {
-          setDuration(e.currentTarget.duration.toFixed(2));
+          setDuration(parseFloat(e.currentTarget.duration.toFixed(2)));
         }}
-        src={song}
+        src={starter_song}
       ></audio>
       <ControlPanel
         play={play}

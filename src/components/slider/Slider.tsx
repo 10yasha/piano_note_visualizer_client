@@ -2,13 +2,19 @@ import { useState, useRef, useEffect } from "react";
 import "./Slider.css";
 import "./Thumb.css";
 
-export default function Slider({ percentage = 0, onChange }) {
+export default function Slider({
+  percentage = 0,
+  onChange,
+}: {
+  percentage: number;
+  onChange: React.ChangeEventHandler<HTMLInputElement>;
+}) {
   const [position, setPosition] = useState<number>(0);
   const [marginLeft, setMarginLeft] = useState<number>(0);
   const [progressBarWidth, setProgressBarWidth] = useState<number>(0);
 
-  const rangeRef = useRef<HTMLInputElement>();
-  const thumbRef = useRef<HTMLInputElement>();
+  const rangeRef = useRef<HTMLInputElement>(null);
+  const thumbRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (rangeRef.current && thumbRef.current) {
