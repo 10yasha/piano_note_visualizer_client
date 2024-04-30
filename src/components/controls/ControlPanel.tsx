@@ -3,12 +3,12 @@ import Button from "./Button";
 import "./ControlPanel.css";
 
 function ControlPanel({
-  play,
+  toggleAudioPlayback,
   isPlaying,
   duration,
   currentTime,
 }: {
-  play: React.MouseEventHandler<HTMLDivElement>;
+  toggleAudioPlayback: React.MouseEventHandler<HTMLDivElement>;
   isPlaying: boolean;
   duration: number;
   currentTime: number;
@@ -47,7 +47,7 @@ function ControlPanel({
   return (
     <div className="control-panel">
       <div className="timer">{secondsToHms(currentTime)}</div>
-      <Button play={play} isPlaying={isPlaying} />
+      <Button toggleAudioPlayback={toggleAudioPlayback} isPlaying={isPlaying} />
       <div className="timer">{secondsToHms(duration)}</div>
     </div>
   );

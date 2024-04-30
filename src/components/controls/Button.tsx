@@ -2,15 +2,18 @@ import React from "react";
 import "./Button.css";
 
 function Button({
-  play,
+  toggleAudioPlayback,
   isPlaying,
 }: {
-  play: React.MouseEventHandler<HTMLDivElement>;
+  toggleAudioPlayback: React.MouseEventHandler<HTMLDivElement>;
   isPlaying: boolean;
 }) {
   return (
     <div className="btn-container">
-      <div onClick={play} className={isPlaying ? "btn-stop" : "btn-play"}></div>
+      <div
+        onClick={toggleAudioPlayback}
+        className={isPlaying ? "btn-stop" : "btn-play"}
+      ></div>
     </div>
   );
 }

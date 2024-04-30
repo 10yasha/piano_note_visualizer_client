@@ -20,10 +20,10 @@ function App() {
     }
   };
 
-  const play = () => {
+  const toggleAudioPlayback = () => {
     const audio = audioRef.current;
     if (audio) {
-      audio.volume = 0.1;
+      audio.volume = 1;
 
       if (!isPlaying) {
         setIsPlaying(true);
@@ -59,7 +59,7 @@ function App() {
         src={starter_song}
       ></audio>
       <ControlPanel
-        play={play}
+        toggleAudioPlayback={toggleAudioPlayback}
         isPlaying={isPlaying}
         duration={duration}
         currentTime={currentTime}
