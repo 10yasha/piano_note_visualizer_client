@@ -17,6 +17,7 @@ import "./App.css";
 
 import MusicPlayer from "./components/musicplayer/MusicPlayer";
 import NotesDisplay from "./components/notesdisplay/NotesDisplay";
+import Keyboard from "./components/keyboard/Keyboard";
 
 function App() {
   const [curTime, setCurTime] = useState<number>(0);
@@ -88,6 +89,7 @@ function App() {
         </div>
         <NotesDisplay curNotes={curNotes} />
       </div>
+      <Keyboard />
     </>
   );
 }
