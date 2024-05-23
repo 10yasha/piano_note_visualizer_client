@@ -13,7 +13,7 @@ function ControlPanel({
   duration: number;
   currentTime: number;
 }) {
-  function secondsToHms(seconds: number) {
+  const secondsToHms = (seconds: number) => {
     if (!seconds) return "00m 00s";
 
     let duration = seconds;
@@ -25,7 +25,7 @@ function ControlPanel({
 
     let sec = Math.floor(duration);
 
-    // add 0's to fill in timestamp (ex. 00m 12s)
+    // add 0's to fill in timestamp
     let display_sec = sec.toString();
     let display_min = min.toString();
     if (sec < 10) {
@@ -42,7 +42,7 @@ function ControlPanel({
     } else {
       return `${min}m ${sec}s`;
     }
-  }
+  };
 
   return (
     <div className="control-panel">
