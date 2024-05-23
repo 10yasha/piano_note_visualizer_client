@@ -11,10 +11,11 @@ import {
 } from "./interfaces/Interfaces";
 import {
   processMidiData,
-  getCurrentNotesFullSearch,
-  getCurrentNotesQuickSearch,
+  fullSearchForIndex,
+  quickSearchForIndex,
 } from "./etc/MidiManipulation";
 import { midiNumToNameStr } from "./etc/Utilies";
+import "./App.css";
 
 function App() {
   const [percentage, setPercentage] = useState<number>(0);
@@ -56,10 +57,10 @@ function App() {
 
   const setCurrentNotes = () => {
     if (audioRecentlyToggled) {
-      setCurIndex(getCurrentNotesFullSearch(curTime, noteData));
+      setCurIndex(fullSearchForIndex(curTime, noteData));
       setAudioRecentlyToggled(false);
     } else {
-      setCurIndex(getCurrentNotesQuickSearch(curTime, curIndex, noteData));
+      setCurIndex(quickSearchForIndex(curTime, curIndex, noteData));
     }
 
     if (curIndex == -1) {
@@ -108,7 +109,7 @@ function App() {
     ).toFixed(2);
     const time = e.currentTarget.currentTime;
 
-    // situations where need to adjust midi data:
+    // if time moved before curTime or big adjustment made, perform full search
     if (time < curTime || Math.abs(time - curTime) > 1)
       setAudioRecentlyToggled(true);
 
@@ -118,30 +119,37 @@ function App() {
 
   return (
     <>
-      <div className="app-container">
-        <h1>{starter_song}</h1>
-        <Slider percentage={percentage} onChange={onChange} />
-        <audio
-          ref={audioRef}
-          onTimeUpdate={getCurDuration}
-          onLoadedData={(e) => {
-            setDuration(parseFloat(e.currentTarget.duration.toFixed(2)));
-          }}
-          src={starter_song}
-        ></audio>
-        <ControlPanel
-          toggleAudioPlayback={toggleAudioPlayback}
-          isPlaying={isPlaying}
-          duration={duration}
-          currentTime={curTime}
-        />
-        <div>
-          Load a midi file{" "}
-          <input type="file" ref={midiRef} onInput={getMidiData} />
+      <div className="app">
+        <div className="audio-player">
+          <h1>{starter_song}</h1>
+          <Slider percentage={percentage} onChange={onChange} />
+          <audio
+            ref={audioRef}
+            onTimeUpdate={getCurDuration}
+            onLoadedData={(e) => {
+              setDuration(parseFloat(e.currentTarget.duration.toFixed(2)));
+            }}
+            src={starter_song}
+          ></audio>
+          <ControlPanel
+            toggleAudioPlayback={toggleAudioPlayback}
+            isPlaying={isPlaying}
+            duration={duration}
+            currentTime={curTime}
+          />
+          <div>
+            Load a midi file{" "}
+            <input type="file" ref={midiRef} onInput={getMidiData} />
+          </div>
         </div>
-        {/* <div>{noteData.length !== 0 && <h3>{curNotes}</h3>}</div> */}
+        <div className="current-notes">
+          {noteData.length !== 0 ? (
+            <h3>{curNotes}</h3>
+          ) : (
+            <h3>current notes here</h3>
+          )}
+        </div>
       </div>
-      <div>{noteData.length !== 0 ? <h3>{curNotes}</h3> : <h3>hello</h3>}</div>
     </>
   );
 }

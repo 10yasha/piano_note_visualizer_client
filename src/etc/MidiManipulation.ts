@@ -67,8 +67,8 @@ const timeMatches = (noteData: NotesInfo, curTime: number, index: number) => {
 };
 
 
-  // binary search
-export const getCurrentNotesFullSearch = (curTime: number, noteData: NotesInfo) => {
+// binary search through everything
+export const fullSearchForIndex = (curTime: number, noteData: NotesInfo) => {
   let start = 0;
   let end = noteData.length - 1;
 
@@ -88,7 +88,8 @@ export const getCurrentNotesFullSearch = (curTime: number, noteData: NotesInfo) 
   return -1;
 };
 
-export const getCurrentNotesQuickSearch = (curTime: number, curIndex: number, noteData: NotesInfo) => {
+// only search indices immediately above curIndex
+export const quickSearchForIndex = (curTime: number, curIndex: number, noteData: NotesInfo) => {
   let newIndex = curIndex;
   while (
     newIndex < noteData.length-1 &&

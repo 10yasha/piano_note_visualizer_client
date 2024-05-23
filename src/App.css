@@ -40,3 +40,16 @@
 .read-the-docs {
   color: #888;
 }
+
+.app {
+  display: flex;
+  flex-direction: column;
+}
+
+.current-notes {
+  
+  align-items: center;
+  width: 100%;
+  min-height: 100px;
+  margin: 10px;
+}
