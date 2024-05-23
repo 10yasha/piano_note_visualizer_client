@@ -1,26 +1,24 @@
 import { useState, useRef, useEffect } from "react";
-import starter_song from "./../example/FFXIII Sabers Edge.mp3";
-import Slider from "./components/slider/Slider";
-import ControlPanel from "./components/controls/ControlPanel";
 import MidiParser from "midi-parser-js";
+
+import { midiNumToNameStr } from "./etc/Utilies";
+import {
+  processMidiData,
+  fullSearchForIndex,
+  quickSearchForIndex,
+} from "./etc/MidiManipulation";
 import {
   RawMidi,
   ProcessedMidi,
   NotesInfo,
   NotesPressed,
 } from "./interfaces/Interfaces";
-import {
-  processMidiData,
-  fullSearchForIndex,
-  quickSearchForIndex,
-} from "./etc/MidiManipulation";
-import { midiNumToNameStr } from "./etc/Utilies";
 import "./App.css";
 
+import MusicPlayer from "./components/musicplayer/MusicPlayer";
+import NotesDisplay from "./components/notesdisplay/NotesDisplay";
+
 function App() {
-  const [percentage, setPercentage] = useState<number>(0);
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const [duration, setDuration] = useState<number>(0);
   const [curTime, setCurTime] = useState<number>(0);
 
   const [midiData, setMidiData] = useState<ProcessedMidi>([]);
@@ -34,7 +32,6 @@ function App() {
   const [curIndex, setCurIndex] = useState<number>(-1);
 
   const midiRef = useRef<HTMLInputElement>(null);
-  const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
     console.log("curNotes:", curNotes);
@@ -77,78 +74,19 @@ function App() {
     }
   };
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const audio = audioRef.current;
-    if (audio) {
-      audio.currentTime = (audio.duration / 100) * e.target.valueAsNumber;
-      setPercentage(e.target.valueAsNumber);
-    }
-  };
-
-  const toggleAudioPlayback = () => {
-    setAudioRecentlyToggled(true);
-    const audio = audioRef.current;
-    if (audio) {
-      audio.volume = 1;
-
-      if (!isPlaying) {
-        setIsPlaying(true);
-        audio.play();
-      } else {
-        setIsPlaying(false);
-        audio.pause();
-      }
-    }
-  };
-
-  const getCurDuration = (e: React.ChangeEvent<HTMLAudioElement>) => {
-    console.log("raw time ", e.currentTarget.currentTime);
-    const percent = (
-      (e.currentTarget.currentTime / e.currentTarget.duration) *
-      100
-    ).toFixed(2);
-    const time = e.currentTarget.currentTime;
-
-    // if time moved before curTime or big adjustment made, perform full search
-    if (time < curTime || Math.abs(time - curTime) > 1)
-      setAudioRecentlyToggled(true);
-
-    setPercentage(+percent);
-    setCurTime(parseFloat(time.toFixed(2)));
-  };
-
   return (
     <>
       <div className="app">
-        <div className="audio-player">
-          <h1>{starter_song}</h1>
-          <Slider percentage={percentage} onChange={onChange} />
-          <audio
-            ref={audioRef}
-            onTimeUpdate={getCurDuration}
-            onLoadedData={(e) => {
-              setDuration(parseFloat(e.currentTarget.duration.toFixed(2)));
-            }}
-            src={starter_song}
-          ></audio>
-          <ControlPanel
-            toggleAudioPlayback={toggleAudioPlayback}
-            isPlaying={isPlaying}
-            duration={duration}
-            currentTime={curTime}
-          />
-          <div>
-            Load a midi file{" "}
-            <input type="file" ref={midiRef} onInput={getMidiData} />
-          </div>
+        <MusicPlayer
+          curTime={curTime}
+          setCurTime={setCurTime}
+          setAudioRecentlyToggled={setAudioRecentlyToggled}
+        />
+        <div>
+          Load a midi file{" "}
+          <input type="file" ref={midiRef} onInput={getMidiData} />
         </div>
-        <div className="current-notes">
-          {noteData.length !== 0 ? (
-            <h3>{curNotes}</h3>
-          ) : (
-            <h3>current notes here</h3>
-          )}
-        </div>
+        <NotesDisplay curNotes={curNotes} />
       </div>
     </>
   );

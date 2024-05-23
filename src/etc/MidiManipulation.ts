@@ -40,7 +40,7 @@ export const processMidiData = (data: RawMidi) : [ProcessedMidi, NotesInfo] => {
 
       convertedNoteData.push({
         time: curTime,
-        notes: [...currentNotes],
+        notes: [...currentNotes.sort()],
       });
     } else {
       // need to eliminate non-note events
