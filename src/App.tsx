@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import MidiParser from "midi-parser-js";
 
-import { midiNumToNameStr } from "./etc/Utilies";
+import { midiNumToName } from "./etc/KeyboardUtils";
 import {
   processMidiData,
   fullSearchForIndex,
@@ -24,7 +24,7 @@ function App() {
 
   const [midiData, setMidiData] = useState<ProcessedMidi>([]);
   const [noteData, setNoteData] = useState<NotesInfo>([]);
-  const [curNotes, setCurNotes] = useState<string>("");
+  const [curNotes, setCurNotes] = useState<number[]>([]); // by midi number
   const [audioRecentlyToggled, setAudioRecentlyToggled] =
     useState<boolean>(true);
 
@@ -62,16 +62,10 @@ function App() {
     }
 
     if (curIndex == -1) {
-      setCurNotes("");
+      setCurNotes([]);
     } else {
       console.log("curIndex", curIndex);
-      setCurNotes(
-        noteData[curIndex].notes
-          .map((noteNum: number) => {
-            return midiNumToNameStr.get(noteNum);
-          })
-          .join(", ")
-      );
+      setCurNotes(noteData[curIndex].notes);
     }
   };
 
@@ -89,7 +83,7 @@ function App() {
         </div>
         <NotesDisplay curNotes={curNotes} />
       </div>
-      <Keyboard />
+      <Keyboard activeNotes={curNotes} />
     </>
   );
 }

@@ -1,0 +1,30 @@
+.keyboard {
+  display: flex;
+}
+
+.key {
+  height: calc(var(--width) * 4);
+  width: var(--width);
+}
+
+.white {
+  --width: 20px;
+  background-color: white;
+  border: 1px solid #333;
+}
+
+.white.active {
+  background-color: #0fb400;
+}
+
+.black {
+  --width: 14px;
+  background-color: black;
+  margin-left: calc(var(--width) / -2);
+  margin-right: calc(var(--width) / -2);
+  z-index: 1;
+}
+
+.black.active {
+  background-color: #0fb400;
+}

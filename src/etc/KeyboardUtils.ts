@@ -1,6 +1,6 @@
 // Based on:
 // https://inspiredacoustics.com/en/MIDI_note_numbers_and_center_frequencies
-export const midiNumToNameStr = new Map([
+export const midiNumToName = new Map([
   [21, "A0"],
   [22, "A#0"],
   [23, "B0"],
