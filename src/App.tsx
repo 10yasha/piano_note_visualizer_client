@@ -20,11 +20,11 @@ import NotesDisplay from "./components/notesdisplay/NotesDisplay";
 import Keyboard from "./components/keyboard/Keyboard";
 
 function App() {
-  const counterIncrement = 10; // milliseconds, rate at which audio updates
-
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [curTime, setCurTime] = useState<number>(0);
+
   const intervalRef = useRef<number | null>(null);
+  const counterIncrement = 10; // milliseconds, rate at which audio updates
 
   const [midiData, setMidiData] = useState<ProcessedMidi>([]);
   const [noteData, setNoteData] = useState<NotesInfo>([]);

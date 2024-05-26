@@ -96,9 +96,10 @@ export const midiNumToName = new Map([
   [106, "A#7"],
   [107, "B7"],
   // high C
-  [108, "C4"],
+  [108, "C8"],
 ]);
 
+// determine change in notes [those to remove, those to add] based on prev vs cur notes
 export const findActiveNotesDiff = (prevNotes : number[], curNotes : number[]) => {
   const intersection = prevNotes.filter(note => curNotes.includes(note));
   const notesToRemove = prevNotes.filter(note => !intersection.includes(note));
