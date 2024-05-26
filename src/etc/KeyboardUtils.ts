@@ -98,3 +98,11 @@ export const midiNumToName = new Map([
   // high C
   [108, "C4"],
 ]);
+
+export const findActiveNotesDiff = (prevNotes : number[], curNotes : number[]) => {
+  const intersection = prevNotes.filter(note => curNotes.includes(note));
+  const notesToRemove = prevNotes.filter(note => !intersection.includes(note));
+  const notesToAdd = curNotes.filter(note => !intersection.includes(note));
+
+  return [notesToRemove, notesToAdd]
+}

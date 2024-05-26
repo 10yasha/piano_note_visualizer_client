@@ -20,7 +20,11 @@ import NotesDisplay from "./components/notesdisplay/NotesDisplay";
 import Keyboard from "./components/keyboard/Keyboard";
 
 function App() {
+  const counterIncrement = 10; // milliseconds, rate at which audio updates
+
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [curTime, setCurTime] = useState<number>(0);
+  const intervalRef = useRef<number | null>(null);
 
   const [midiData, setMidiData] = useState<ProcessedMidi>([]);
   const [noteData, setNoteData] = useState<NotesInfo>([]);
@@ -35,7 +39,8 @@ function App() {
   const midiRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    console.log("curNotes:", curNotes);
+    // console.log("curNotes:", curNotes);
+    console.log("cur time ", curTime);
     if (noteData.length !== 0) {
       setCurrentNotes();
     }
@@ -64,8 +69,40 @@ function App() {
     if (curIndex == -1) {
       setCurNotes([]);
     } else {
-      console.log("curIndex", curIndex);
+      // console.log("curIndex", curIndex);
       setCurNotes(noteData[curIndex].notes);
+    }
+  };
+
+  const syncCounter = (value: boolean, audioPlaying: boolean) => {
+    console.log("syncCounter called");
+    stopCounter();
+    if (audioPlaying) {
+      console.log("restart counter called");
+      startCounter();
+    }
+    setAudioRecentlyToggled(value);
+  };
+
+  const setIsPlayingExtra = (value: boolean) => {
+    setIsPlaying(value);
+    if (value == false) {
+      console.log("stopped");
+      stopCounter();
+    }
+  };
+
+  const incrementTime = () =>
+    setCurTime((curTime) => curTime + counterIncrement / 1000);
+
+  const startCounter = () => {
+    intervalRef.current = window.setInterval(incrementTime, counterIncrement);
+  };
+
+  const stopCounter = () => {
+    if (intervalRef.current) {
+      window.clearInterval(intervalRef.current);
+      intervalRef.current = null;
     }
   };
 
@@ -75,7 +112,9 @@ function App() {
         <MusicPlayer
           curTime={curTime}
           setCurTime={setCurTime}
-          setAudioRecentlyToggled={setAudioRecentlyToggled}
+          setAudioRecentlyToggled={syncCounter}
+          isPlaying={isPlaying}
+          setIsPlaying={setIsPlayingExtra}
         />
         <div>
           Load a midi file{" "}

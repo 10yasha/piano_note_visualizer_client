@@ -12,7 +12,7 @@ export default function NotesDisplay({ curNotes }: { curNotes: number[] }) {
             .join(", ")}
         </h3>
       ) : (
-        <h3>current notes here</h3>
+        <h3></h3>
       )}
     </div>
   );

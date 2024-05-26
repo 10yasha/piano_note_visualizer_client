@@ -7,16 +7,19 @@ import ControlPanel from "./Controls/ControlPanel";
 interface MusicPlayerProps {
   curTime: number;
   setCurTime: React.Dispatch<React.SetStateAction<number>>;
-  setAudioRecentlyToggled: React.Dispatch<React.SetStateAction<boolean>>;
+  setAudioRecentlyToggled: (arg1: boolean, arg2: boolean) => void;
+  isPlaying: boolean;
+  setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function MusicPlayer({
   curTime,
   setCurTime,
   setAudioRecentlyToggled,
+  isPlaying,
+  setIsPlaying,
 }: MusicPlayerProps) {
   const [percentage, setPercentage] = useState<number>(0);
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [duration, setDuration] = useState<number>(0);
 
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -30,23 +33,33 @@ export default function MusicPlayer({
   };
 
   const toggleAudioPlayback = () => {
-    setAudioRecentlyToggled(true);
     const audio = audioRef.current;
     if (audio) {
       audio.volume = 1;
 
       if (!isPlaying) {
-        setIsPlaying(true);
+        console.log("isPlaying set true");
         audio.play();
+        setIsPlaying(true);
+        setAudioRecentlyToggled(true, true);
+        console.log(
+          "main setAudioRecentlyToggled called, isPlaying:",
+          isPlaying
+        );
       } else {
-        setIsPlaying(false);
+        console.log("isPlaying set false");
         audio.pause();
+        setIsPlaying(false);
+        setAudioRecentlyToggled(true, false);
+        console.log(
+          "main setAudioRecentlyToggled called, isPlaying:",
+          isPlaying
+        );
       }
     }
   };
 
   const getCurDuration = (e: React.ChangeEvent<HTMLAudioElement>) => {
-    console.log("raw time ", e.currentTarget.currentTime);
     const percent = (
       (e.currentTarget.currentTime / e.currentTarget.duration) *
       100
@@ -54,8 +67,13 @@ export default function MusicPlayer({
     const time = e.currentTarget.currentTime;
 
     // if time moved before curTime or big adjustment made, perform full search
-    if (time < curTime || Math.abs(time - curTime) > 1)
-      setAudioRecentlyToggled(true);
+    if (time < curTime || Math.abs(time - curTime) > 1) {
+      console.log(
+        "sideeffect setAudioRecentlyToggled called, isPlaying:",
+        isPlaying
+      );
+      setAudioRecentlyToggled(true, isPlaying);
+    }
 
     setPercentage(+percent);
     setCurTime(parseFloat(time.toFixed(2)));

@@ -1,19 +1,26 @@
 import { useState, useEffect } from "react";
 
-import { midiNumToName } from "../../etc/KeyboardUtils";
+import { midiNumToName, findActiveNotesDiff } from "../../etc/KeyboardUtils";
 import "./Keyboard.css";
 
 export default function Keyboard({ activeNotes }: { activeNotes: number[] }) {
-  // const [pressedNotes, setPressedNotes] = useState<number[]>([]);
+  const [pressedNotes, setPressedNotes] = useState<number[]>([]);
 
   useEffect(() => {
-    [...midiNumToName.keys()].forEach((midiId) => {
+    const [notesToRemove, notesToAdd] = findActiveNotesDiff(
+      pressedNotes,
+      activeNotes
+    );
+
+    notesToRemove.forEach((midiId) => {
       document.getElementById(midiId.toString())?.classList.remove("active");
     });
 
-    activeNotes.forEach((midiId) => {
+    notesToAdd.forEach((midiId) => {
       document.getElementById(midiId.toString())?.classList.add("active");
     });
+
+    setPressedNotes(activeNotes);
   }, [activeNotes]);
 
   return (
@@ -21,6 +28,7 @@ export default function Keyboard({ activeNotes }: { activeNotes: number[] }) {
       {Array.from(midiNumToName).map(([keyNum, noteName]) => {
         return (
           <div
+            key={keyNum.toString()}
             id={keyNum.toString()}
             className={(noteName.length == 3 ? "black" : "white") + " key"}
           ></div>
