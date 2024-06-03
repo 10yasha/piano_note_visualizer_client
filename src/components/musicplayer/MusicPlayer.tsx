@@ -3,14 +3,7 @@ import { useState, useRef } from "react";
 import starter_song from "../../../example/FFXIII Sabers Edge.mp3";
 import Slider from "./Slider/Slider";
 import ControlPanel from "./Controls/ControlPanel";
-
-interface MusicPlayerProps {
-  curTime: number;
-  setCurTime: React.Dispatch<React.SetStateAction<number>>;
-  setAudioRecentlyToggled: (arg1: boolean, arg2: boolean) => void;
-  isPlaying: boolean;
-  setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>;
-}
+import { AudioPlayerProps } from "../../interfaces/Interfaces";
 
 export default function MusicPlayer({
   curTime,
@@ -18,7 +11,7 @@ export default function MusicPlayer({
   setAudioRecentlyToggled,
   isPlaying,
   setIsPlaying,
-}: MusicPlayerProps) {
+}: AudioPlayerProps) {
   const [percentage, setPercentage] = useState<number>(0);
   const [duration, setDuration] = useState<number>(0);
 

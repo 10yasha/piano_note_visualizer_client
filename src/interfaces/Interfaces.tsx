@@ -32,3 +32,11 @@ export interface NotesPressed {
   time: number; // in seconds
   notes: number[]; // array of current notes pressed
 }
+
+export interface AudioPlayerProps {
+  curTime: number;
+  setCurTime: React.Dispatch<React.SetStateAction<number>>;
+  setAudioRecentlyToggled: (arg1: boolean, arg2: boolean) => void;
+  isPlaying: boolean;
+  setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>;
+}
