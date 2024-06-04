@@ -1,6 +1,10 @@
 import { midiNumToName } from "../../etc/KeyboardUtils";
 
-export default function NotesDisplay({ curNotes }: { curNotes: number[] }) {
+export default function ActiveNotesDisplay({
+  curNotes,
+}: {
+  curNotes: number[];
+}) {
   return (
     <div className="current-notes">
       {curNotes.length !== 0 ? (

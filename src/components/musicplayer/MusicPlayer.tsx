@@ -3,15 +3,20 @@ import { useState, useRef } from "react";
 import starter_song from "../../../example/FFXIII Sabers Edge.mp3";
 import Slider from "./Slider/Slider";
 import ControlPanel from "./Controls/ControlPanel";
-import { AudioPlayerProps } from "../../interfaces/Interfaces";
+
+interface MusicPlayerProps {
+  curTime: number;
+  setCurTime: React.Dispatch<React.SetStateAction<number>>;
+  syncCounter: (isPlaying: boolean) => void;
+  isPlaying: boolean;
+}
 
 export default function MusicPlayer({
   curTime,
   setCurTime,
-  setAudioRecentlyToggled,
+  syncCounter,
   isPlaying,
-  setIsPlaying,
-}: AudioPlayerProps) {
+}: MusicPlayerProps) {
   const [percentage, setPercentage] = useState<number>(0);
   const [duration, setDuration] = useState<number>(0);
 
@@ -31,23 +36,13 @@ export default function MusicPlayer({
       audio.volume = 1;
 
       if (!isPlaying) {
-        console.log("isPlaying set true");
         audio.play();
-        setIsPlaying(true);
-        setAudioRecentlyToggled(true, true);
-        console.log(
-          "main setAudioRecentlyToggled called, isPlaying:",
-          isPlaying
-        );
+        syncCounter(true);
+        console.log("music playing");
       } else {
-        console.log("isPlaying set false");
         audio.pause();
-        setIsPlaying(false);
-        setAudioRecentlyToggled(true, false);
-        console.log(
-          "main setAudioRecentlyToggled called, isPlaying:",
-          isPlaying
-        );
+        syncCounter(false);
+        console.log("music paused");
       }
     }
   };
@@ -61,11 +56,8 @@ export default function MusicPlayer({
 
     // if time moved before curTime or big adjustment made, perform full search
     if (time < curTime || Math.abs(time - curTime) > 1) {
-      console.log(
-        "sideeffect setAudioRecentlyToggled called, isPlaying:",
-        isPlaying
-      );
-      setAudioRecentlyToggled(true, isPlaying);
+      console.log("side effect syncCounter called, isPlaying:", isPlaying);
+      syncCounter(isPlaying);
     }
 
     setPercentage(+percent);

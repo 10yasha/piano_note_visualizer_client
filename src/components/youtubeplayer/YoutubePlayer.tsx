@@ -1,9 +1,7 @@
 import { useState, useRef, useEffect } from "react";
-import YouTube, { YouTubeProps } from "react-youtube";
+import YouTube, { YouTubeProps, YouTubePlayer } from "react-youtube";
 
 import "./YoutubePlayer.css";
-
-import { AudioPlayerProps } from "../../interfaces/Interfaces";
 
 enum YTState {
   unstarted = -1,
@@ -14,17 +12,23 @@ enum YTState {
   cued = 5,
 }
 
+interface YoutubePlayerProps {
+  setCurTime: React.Dispatch<React.SetStateAction<number>>;
+  syncCounter: (isPlaying: boolean) => void;
+  width: number;
+  height: number;
+}
+
 export default function YoutubePlayer({
-  curTime,
   setCurTime,
-  setAudioRecentlyToggled,
-  isPlaying,
-  setIsPlaying,
-}: AudioPlayerProps) {
-  const videoRef = useRef(null);
+  syncCounter,
+  width,
+  height,
+}: YoutubePlayerProps) {
+  const videoRef = useRef<YouTubePlayer | null>(null);
 
   useEffect(() => {
-    if (videoRef.current && videoRef.current.getCurrentTime) {
+    if (videoRef.current) {
       setCurTime(videoRef.current.getCurrentTime());
     }
   });
@@ -37,18 +41,16 @@ export default function YoutubePlayer({
   const onPlayerStateChange: YouTubeProps["onStateChange"] = (e) => {
     if (e.data == YTState.playing) {
       console.log("youtube playing");
-      setIsPlaying(true);
-      setAudioRecentlyToggled(true, true);
+      syncCounter(true);
     } else if (e.data == YTState.paused) {
       console.log("youtube paused");
-      setIsPlaying(false);
-      setAudioRecentlyToggled(true, false);
+      syncCounter(false);
     }
   };
 
   const opts: YouTubeProps["opts"] = {
-    height: "225",
-    width: "400",
+    height: height,
+    width: width,
     // https://developers.google.com/youtube/player_parameters
     playerVars: {
       autoplay: 0,
@@ -58,8 +60,8 @@ export default function YoutubePlayer({
   return (
     <>
       <YouTube
-        // videoId="faP8gKBuErg" // saber's edge currently
-        videoId="faP8gKBuErg"
+        videoId="faP8gKBuErg" // saber's edge currently
+        // videoId=""
         opts={opts}
         onReady={onPlayerReady}
         onStateChange={onPlayerStateChange}

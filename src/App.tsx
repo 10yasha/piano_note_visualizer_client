@@ -17,7 +17,7 @@ import "./App.css";
 
 import MusicPlayer from "./components/musicplayer/MusicPlayer";
 import YoutubePlayer from "./components/youtubeplayer/YoutubePlayer";
-import NotesDisplay from "./components/notesdisplay/NotesDisplay";
+import ActiveNotesDisplay from "./components/activenotesdisplay/ActiveNotesDisplay";
 import Keyboard from "./components/keyboard/Keyboard";
 
 function App() {
@@ -69,29 +69,22 @@ function App() {
     if (curIndex == -1) {
       setCurNotes([]);
     } else {
-      // console.log("curIndex", curIndex);
       setCurNotes(noteData[curIndex].notes);
     }
   };
 
-  const syncCounter = (value: boolean, audioPlaying: boolean) => {
-    console.log("syncCounter called");
+  const syncCounter = (isPlaying: boolean) => {
+    console.log("counter stopped");
     stopCounter();
-    if (audioPlaying) {
-      console.log("restart counter called");
+    if (isPlaying) {
+      console.log("counter restarted");
       startCounter();
     }
-    setAudioRecentlyToggled(value);
+    setAudioRecentlyToggled(true);
   };
 
-  const setIsPlayingExtra = (value: boolean) => {
-    setIsPlaying(value);
-    if (value == false) {
-      console.log("stopped");
-      stopCounter();
-    }
-  };
-
+  /* following counter uses setInterval() to maintain a fast update rate so 
+     active notes and waterfall feel responsive */
   const incrementTime = () =>
     setCurTime((curTime) => curTime + counterIncrement / 1000);
 
@@ -112,22 +105,20 @@ function App() {
         {/* <MusicPlayer
           curTime={curTime}
           setCurTime={setCurTime}
-          setAudioRecentlyToggled={syncCounter}
+          syncCounter={syncCounter}
           isPlaying={isPlaying}
-          setIsPlaying={setIsPlayingExtra}
         /> */}
         <YoutubePlayer
-          curTime={curTime}
           setCurTime={setCurTime}
-          setAudioRecentlyToggled={syncCounter}
-          isPlaying={isPlaying}
-          setIsPlaying={setIsPlayingExtra}
+          syncCounter={syncCounter}
+          width={400}
+          height={225}
         />
         <div>
           Load a midi file{" "}
           <input type="file" ref={midiRef} onInput={getMidiData} />
         </div>
-        <NotesDisplay curNotes={curNotes} />
+        <ActiveNotesDisplay curNotes={curNotes} />
       </div>
       <Keyboard activeNotes={curNotes} />
     </>
