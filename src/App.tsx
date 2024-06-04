@@ -40,7 +40,6 @@ function App() {
   const midiRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    // console.log("curNotes:", curNotes);
     console.log("cur time ", curTime);
     if (noteData.length !== 0) {
       setCurrentNotes();

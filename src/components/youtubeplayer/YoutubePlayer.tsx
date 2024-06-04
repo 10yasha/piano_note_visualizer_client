@@ -1,10 +1,8 @@
 import { useState, useRef, useEffect } from "react";
-// import useScript from "../../etc/UseScript";
 import YouTube, { YouTubeProps } from "react-youtube";
 
 import "./YoutubePlayer.css";
 
-// import starter_song from "../../../example/FFXIII Sabers Edge.mp3";
 import { AudioPlayerProps } from "../../interfaces/Interfaces";
 
 enum YTState {
@@ -32,8 +30,6 @@ export default function YoutubePlayer({
   });
 
   const onPlayerReady: YouTubeProps["onReady"] = (e) => {
-    // access to player in all event handlers via event.target
-    // event.target.pauseVideo();
     videoRef.current = e.target;
     console.log("youtube ready");
   };
@@ -62,7 +58,7 @@ export default function YoutubePlayer({
   return (
     <>
       <YouTube
-        // videoId="YtZh3ydBZLA"
+        // videoId="faP8gKBuErg" // saber's edge currently
         videoId="faP8gKBuErg"
         opts={opts}
         onReady={onPlayerReady}
