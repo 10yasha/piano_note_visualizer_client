@@ -12,6 +12,7 @@ interface AudioPlayerProps {
   syncCounter: (isPlaying: boolean) => void;
   isPlaying: boolean;
   updateIsPlaying: (isPlaying: boolean) => void;
+  stopCounter: () => void;
 }
 
 export default function AudioPlayer({
@@ -20,6 +21,7 @@ export default function AudioPlayer({
   syncCounter,
   isPlaying,
   updateIsPlaying,
+  stopCounter,
 }: AudioPlayerProps) {
   const [percentage, setPercentage] = useState<number>(0);
   const [duration, setDuration] = useState<number>(0);
@@ -69,7 +71,10 @@ export default function AudioPlayer({
     setPercentage(percent);
     setCurTime(parseFloat(time.toFixed(2)));
 
-    if (percent >= 100) updateIsPlaying(false);
+    if (percent >= 100) {
+      updateIsPlaying(false);
+      stopCounter();
+    }
   };
 
   return (

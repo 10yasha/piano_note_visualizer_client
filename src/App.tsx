@@ -84,9 +84,6 @@ function App() {
 
   const updateIsPlaying = (isPlaying: boolean) => {
     setIsPlaying(isPlaying);
-    if (isPlaying == false) {
-      stopCounter();
-    }
   };
 
   /* following counter uses setInterval() to maintain a fast update rate so 
@@ -114,6 +111,7 @@ function App() {
           syncCounter={syncCounter}
           isPlaying={isPlaying}
           updateIsPlaying={updateIsPlaying}
+          stopCounter={stopCounter}
         />
         {/* <YoutubePlayer
           setCurTime={setCurTime}
