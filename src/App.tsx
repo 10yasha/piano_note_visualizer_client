@@ -20,7 +20,6 @@ import ActiveNotesDisplay from "./components/activenotesdisplay/ActiveNotesDispl
 import Keyboard from "./components/keyboard/Keyboard";
 
 function App() {
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [curTime, setCurTime] = useState<number>(0);
 
   const intervalRef = useRef<number | null>(null);
@@ -82,10 +81,6 @@ function App() {
     setAudioRecentlyToggled(true);
   };
 
-  const updateIsPlaying = (isPlaying: boolean) => {
-    setIsPlaying(isPlaying);
-  };
-
   /* following counter uses setInterval() to maintain a fast update rate so 
      active notes and waterfall feel responsive */
   const incrementTime = () =>
@@ -109,8 +104,6 @@ function App() {
           curTime={curTime}
           setCurTime={setCurTime}
           syncCounter={syncCounter}
-          isPlaying={isPlaying}
-          updateIsPlaying={updateIsPlaying}
           stopCounter={stopCounter}
         />
         {/* <YoutubePlayer

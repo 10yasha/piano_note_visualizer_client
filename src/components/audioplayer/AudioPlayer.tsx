@@ -10,8 +10,6 @@ interface AudioPlayerProps {
   curTime: number;
   setCurTime: React.Dispatch<React.SetStateAction<number>>;
   syncCounter: (isPlaying: boolean) => void;
-  isPlaying: boolean;
-  updateIsPlaying: (isPlaying: boolean) => void;
   stopCounter: () => void;
 }
 
@@ -19,10 +17,9 @@ export default function AudioPlayer({
   curTime,
   setCurTime,
   syncCounter,
-  isPlaying,
-  updateIsPlaying,
   stopCounter,
 }: AudioPlayerProps) {
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [percentage, setPercentage] = useState<number>(0);
   const [duration, setDuration] = useState<number>(0);
 
@@ -43,12 +40,12 @@ export default function AudioPlayer({
 
       if (!isPlaying) {
         audio.play();
-        updateIsPlaying(true);
+        setIsPlaying(true);
         syncCounter(true);
         console.log("music playing");
       } else {
         audio.pause();
-        updateIsPlaying(false);
+        setIsPlaying(false);
         syncCounter(false);
         console.log("music paused");
       }
@@ -72,7 +69,7 @@ export default function AudioPlayer({
     setCurTime(parseFloat(time.toFixed(2)));
 
     if (percent >= 100) {
-      updateIsPlaying(false);
+      setIsPlaying(false);
       stopCounter();
     }
   };
