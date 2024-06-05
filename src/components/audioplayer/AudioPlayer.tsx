@@ -4,19 +4,21 @@ import starter_song from "../../../example/FFXIII Sabers Edge.mp3";
 import Slider from "./Slider/Slider";
 import ControlPanel from "./Controls/ControlPanel";
 
-interface MusicPlayerProps {
+import "./AudioPlayer.css";
+
+interface AudioPlayerProps {
   curTime: number;
   setCurTime: React.Dispatch<React.SetStateAction<number>>;
   syncCounter: (isPlaying: boolean) => void;
   isPlaying: boolean;
 }
 
-export default function MusicPlayer({
+export default function AudioPlayer({
   curTime,
   setCurTime,
   syncCounter,
   isPlaying,
-}: MusicPlayerProps) {
+}: AudioPlayerProps) {
   const [percentage, setPercentage] = useState<number>(0);
   const [duration, setDuration] = useState<number>(0);
 

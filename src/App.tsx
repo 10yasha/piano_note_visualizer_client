@@ -15,7 +15,7 @@ import {
 } from "./interfaces/Interfaces";
 import "./App.css";
 
-import MusicPlayer from "./components/musicplayer/MusicPlayer";
+import AudioPlayer from "./components/audioplayer/AudioPlayer";
 import YoutubePlayer from "./components/youtubeplayer/YoutubePlayer";
 import ActiveNotesDisplay from "./components/activenotesdisplay/ActiveNotesDisplay";
 import Keyboard from "./components/keyboard/Keyboard";
@@ -102,7 +102,7 @@ function App() {
   return (
     <>
       <div className="app">
-        {/* <MusicPlayer
+        {/* <AudioPlayer
           curTime={curTime}
           setCurTime={setCurTime}
           syncCounter={syncCounter}
