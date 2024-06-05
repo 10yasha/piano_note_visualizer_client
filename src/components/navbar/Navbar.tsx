@@ -1,7 +1,7 @@
 import React from "react";
 
 import SearchBar from "./searchbar/SearchBar";
-import { RecordInfo } from "../../../types/GeneralTypes";
+import { RecordInfo } from "../../types/GeneralTypes";
 
 import "./Navbar.css";
 
@@ -10,14 +10,14 @@ function Navbar() {
     console.log(record.ENname);
   };
 
-  const dummyRecords: RecordInfo = [
+  const dummyRecords: RecordInfo[] = [
     {
       id: "a",
       ENname: "FFXIII - Saber's Edge",
       JPfname: "c",
       JPhname: "c",
       type: "vgm",
-      tags: "FFXIII",
+      tags: ["FFXIII"],
     },
     {
       id: "b",
@@ -25,7 +25,7 @@ function Navbar() {
       JPfname: "d",
       JPhname: "d",
       type: "vgm",
-      tags: "Persona 3",
+      tags: ["Persona 3"],
     },
   ];
 
