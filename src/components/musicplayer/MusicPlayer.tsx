@@ -59,7 +59,7 @@ export default function MusicPlayer({
   return (
     <>
       <Button onClick={swapPlayer} label="swap" />
-      <div>
+      <div className="player-container">
         {player == "youtube" ? (
           <YoutubePlayer
             setCurTime={setCurTime}

@@ -76,7 +76,7 @@ export default function AudioPlayer({
 
   return (
     <div className="audio-player">
-      <h1>{"Audio Only"}</h1>
+      <h3>{"Audio Only"}</h3>
       <Slider percentage={percentage} onChange={onChange} />
       <audio
         ref={audioRef}

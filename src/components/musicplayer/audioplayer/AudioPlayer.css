@@ -1,18 +1,19 @@
-h1 {
-  text-align: center;
-  font-weight: 400;
-  margin-bottom: 35px;
-  padding: 0;
-  margin: 0;
-  font-size: 25px;
-}
-
 .audio-player {
   min-width: 400px;
+  max-height: 80px;
   padding: 0 10px;
   margin: 10px;
   background-color: #272727;
   padding: 30px 20px;
   border-radius: 10px;
   box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.479);
+}
+
+.audio-player > h3 {
+  text-align: center;
+  font-weight: 400;
+  margin-bottom: 35px;
+  padding: 0;
+  margin: 0;
+  margin-bottom: 10px;
 }
