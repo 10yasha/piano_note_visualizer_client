@@ -38,9 +38,9 @@ function ControlPanel({
     if (Math.floor(hours) > 0) {
       return `${Math.floor(hours)}h ${display_min}m ${display_sec}s`;
     } else if (min == 0) {
-      return `00m ${sec}s`;
+      return `00m ${display_sec}s`;
     } else {
-      return `${min}m ${sec}s`;
+      return `${display_min}m ${display_sec}s`;
     }
   };
 

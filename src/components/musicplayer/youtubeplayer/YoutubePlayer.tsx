@@ -63,13 +63,15 @@ export default function YoutubePlayer({
 
   return (
     <>
-      <YouTube
-        videoId="faP8gKBuErg" // saber's edge currently
-        // videoId="tW9Alr38Ha0" // test vid so I'm not accidentally adding many views to my own vids
-        opts={opts}
-        onReady={onPlayerReady}
-        onStateChange={onPlayerStateChange}
-      />
+      <div className="player-container">
+        <YouTube
+          videoId="faP8gKBuErg" // saber's edge currently
+          // videoId="tW9Alr38Ha0" // test vid so I'm not accidentally adding many views to my own vids
+          opts={opts}
+          onReady={onPlayerReady}
+          onStateChange={onPlayerStateChange}
+        />
+      </div>
     </>
   );
 }

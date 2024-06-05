@@ -5,6 +5,8 @@ import YoutubePlayer from "./youtubeplayer/YoutubePlayer";
 import { Player } from "../../types/GeneralTypes";
 import Button from "../Button/Button";
 
+import "./MusicPlayer.css";
+
 interface MusicPlayerProps {
   curTime: number;
   setCurTime: React.Dispatch<React.SetStateAction<number>>;
@@ -56,8 +58,8 @@ export default function MusicPlayer({
 
   return (
     <>
-      <div className="player-container">
-        <Button onClick={swapPlayer} label="swap" />
+      <Button onClick={swapPlayer} label="swap" />
+      <div>
         {player == "youtube" ? (
           <YoutubePlayer
             setCurTime={setCurTime}

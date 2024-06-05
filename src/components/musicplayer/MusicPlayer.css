@@ -1,0 +1,7 @@
+.player-container{
+    width: 500px;
+    height: 260px;
+    margin: 10px;
+    display: flex;
+    justify-content: center;
+}
