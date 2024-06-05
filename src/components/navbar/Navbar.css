@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  min-height: 40px;
+  min-height: 45px;
   background-color: #241909;
   color: #fff;
   position: fixed;
@@ -22,4 +22,14 @@
 .navbar-right {
   flex: 1;
   text-align: right;
+}
+
+.navbar-btn {
+  border: none;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+  margin: 0px 20px;
 }
