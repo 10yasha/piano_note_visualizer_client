@@ -1,5 +1,7 @@
 import { midiNumToName } from "../../etc/KeyboardUtils";
 
+import "./ActiveNotesDIsplay.css";
+
 export default function ActiveNotesDisplay({
   curNotes,
 }: {
