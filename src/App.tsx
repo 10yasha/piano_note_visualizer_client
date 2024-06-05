@@ -6,24 +6,15 @@ import {
   fullSearchForIndex,
   quickSearchForIndex,
 } from "./etc/MidiManipulation";
-import {
-  RawMidi,
-  ProcessedMidi,
-  NotesInfo,
-  NotesPressed,
-} from "./types/MidiTypes";
+import { RawMidi, ProcessedMidi, NotesInfo } from "./types/MidiTypes";
 import "./App.css";
 
-import AudioPlayer from "./components/audioplayer/AudioPlayer";
-import YoutubePlayer from "./components/youtubeplayer/YoutubePlayer";
+import MusicPlayer from "./components/musicplayer/MusicPlayer";
 import ActiveNotesDisplay from "./components/activenotesdisplay/ActiveNotesDisplay";
 import Keyboard from "./components/keyboard/Keyboard";
 
 function App() {
   const [curTime, setCurTime] = useState<number>(0);
-
-  const intervalRef = useRef<number | null>(null);
-  const counterIncrement = 10; // milliseconds, rate at which current notes will update
 
   const [midiData, setMidiData] = useState<ProcessedMidi>([]);
   const [noteData, setNoteData] = useState<NotesInfo>([]);
@@ -71,54 +62,21 @@ function App() {
     }
   };
 
-  const syncCounter = (isPlaying: boolean) => {
-    console.log("counter stopped");
-    stopCounter();
-    if (isPlaying) {
-      console.log("counter restarted");
-      startCounter();
-    }
-    setAudioRecentlyToggled(true);
-  };
-
-  /* following counter uses setInterval() to maintain a fast update rate so 
-     active notes and waterfall feel responsive */
-  const incrementTime = () =>
-    setCurTime((curTime) => curTime + counterIncrement / 1000);
-
-  const startCounter = () => {
-    intervalRef.current = window.setInterval(incrementTime, counterIncrement);
-  };
-
-  const stopCounter = () => {
-    if (intervalRef.current) {
-      window.clearInterval(intervalRef.current);
-      intervalRef.current = null;
-    }
-  };
-
   return (
     <>
       <div className="app">
-        <AudioPlayer
+        <MusicPlayer
           curTime={curTime}
           setCurTime={setCurTime}
-          syncCounter={syncCounter}
-          stopCounter={stopCounter}
+          setAudioRecentlyToggled={setAudioRecentlyToggled}
         />
-        {/* <YoutubePlayer
-          setCurTime={setCurTime}
-          syncCounter={syncCounter}
-          width={400}
-          height={225}
-        /> */}
         <div>
           Load a midi file{" "}
           <input type="file" ref={midiRef} onInput={getMidiData} />
         </div>
         <ActiveNotesDisplay curNotes={curNotes} />
+        <Keyboard activeNotes={curNotes} />
       </div>
-      <Keyboard activeNotes={curNotes} />
     </>
   );
 }

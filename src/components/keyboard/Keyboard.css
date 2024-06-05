@@ -14,7 +14,8 @@
 }
 
 .white.active {
-  background-color: #0fb400;
+  /* background-color: #0fb400; */
+  background-color: #00abb4;
 }
 
 .black {
@@ -26,5 +27,6 @@
 }
 
 .black.active {
-  background-color: #0fb400;
+  /* background-color: #0fb400; */
+  background-color: #00abb4;
 }

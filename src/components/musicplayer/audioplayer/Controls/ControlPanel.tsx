@@ -1,5 +1,5 @@
 import React from "react";
-import Button from "./Button";
+import PlayButton from "./PlayButton";
 import "./ControlPanel.css";
 
 function ControlPanel({
@@ -47,7 +47,10 @@ function ControlPanel({
   return (
     <div className="control-panel">
       <div className="timer">{secondsToHms(currentTime)}</div>
-      <Button toggleAudioPlayback={toggleAudioPlayback} isPlaying={isPlaying} />
+      <PlayButton
+        toggleAudioPlayback={toggleAudioPlayback}
+        isPlaying={isPlaying}
+      />
       <div className="timer">{secondsToHms(duration)}</div>
     </div>
   );

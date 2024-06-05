@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 
-import starter_song from "../../../example/FFXIII Sabers Edge.mp3";
+import starter_song from "../../../../example/FFXIII Sabers Edge.mp3";
 import Slider from "./Slider/Slider";
 import ControlPanel from "./Controls/ControlPanel";
 
