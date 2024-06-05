@@ -11,6 +11,7 @@ interface AudioPlayerProps {
   setCurTime: React.Dispatch<React.SetStateAction<number>>;
   syncCounter: (isPlaying: boolean) => void;
   isPlaying: boolean;
+  updateIsPlaying: (isPlaying: boolean) => void;
 }
 
 export default function AudioPlayer({
@@ -18,6 +19,7 @@ export default function AudioPlayer({
   setCurTime,
   syncCounter,
   isPlaying,
+  updateIsPlaying,
 }: AudioPlayerProps) {
   const [percentage, setPercentage] = useState<number>(0);
   const [duration, setDuration] = useState<number>(0);
@@ -39,18 +41,20 @@ export default function AudioPlayer({
 
       if (!isPlaying) {
         audio.play();
+        updateIsPlaying(true);
         syncCounter(true);
         console.log("music playing");
       } else {
         audio.pause();
+        updateIsPlaying(false);
         syncCounter(false);
         console.log("music paused");
       }
     }
   };
 
-  const getCurDuration = (e: React.ChangeEvent<HTMLAudioElement>) => {
-    const percent = (
+  const updateTime = (e: React.ChangeEvent<HTMLAudioElement>) => {
+    const percent = +(
       (e.currentTarget.currentTime / e.currentTarget.duration) *
       100
     ).toFixed(2);
@@ -62,8 +66,10 @@ export default function AudioPlayer({
       syncCounter(isPlaying);
     }
 
-    setPercentage(+percent);
+    setPercentage(percent);
     setCurTime(parseFloat(time.toFixed(2)));
+
+    if (percent >= 100) updateIsPlaying(false);
   };
 
   return (
@@ -72,7 +78,7 @@ export default function AudioPlayer({
       <Slider percentage={percentage} onChange={onChange} />
       <audio
         ref={audioRef}
-        onTimeUpdate={getCurDuration}
+        onTimeUpdate={updateTime}
         onLoadedData={(e) => {
           setDuration(parseFloat(e.currentTarget.duration.toFixed(2)));
         }}

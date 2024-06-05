@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useRef, useEffect } from "react";
 import YouTube, { YouTubeProps, YouTubePlayer } from "react-youtube";
 
 import "./YoutubePlayer.css";

@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import MidiParser from "midi-parser-js";
 
-import { midiNumToName } from "./etc/KeyboardUtils";
 import {
   processMidiData,
   fullSearchForIndex,
@@ -25,7 +24,7 @@ function App() {
   const [curTime, setCurTime] = useState<number>(0);
 
   const intervalRef = useRef<number | null>(null);
-  const counterIncrement = 10; // milliseconds, rate at which audio updates
+  const counterIncrement = 10; // milliseconds, rate at which current notes will update
 
   const [midiData, setMidiData] = useState<ProcessedMidi>([]);
   const [noteData, setNoteData] = useState<NotesInfo>([]);
@@ -83,6 +82,13 @@ function App() {
     setAudioRecentlyToggled(true);
   };
 
+  const updateIsPlaying = (isPlaying: boolean) => {
+    setIsPlaying(isPlaying);
+    if (isPlaying == false) {
+      stopCounter();
+    }
+  };
+
   /* following counter uses setInterval() to maintain a fast update rate so 
      active notes and waterfall feel responsive */
   const incrementTime = () =>
@@ -102,18 +108,19 @@ function App() {
   return (
     <>
       <div className="app">
-        {/* <AudioPlayer
+        <AudioPlayer
           curTime={curTime}
           setCurTime={setCurTime}
           syncCounter={syncCounter}
           isPlaying={isPlaying}
-        /> */}
-        <YoutubePlayer
+          updateIsPlaying={updateIsPlaying}
+        />
+        {/* <YoutubePlayer
           setCurTime={setCurTime}
           syncCounter={syncCounter}
           width={400}
           height={225}
-        />
+        /> */}
         <div>
           Load a midi file{" "}
           <input type="file" ref={midiRef} onInput={getMidiData} />
