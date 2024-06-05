@@ -9,6 +9,7 @@ import {
 import { RawMidi, ProcessedMidi, NotesInfo } from "./types/MidiTypes";
 import "./App.css";
 
+import Navbar from "./components/navbar/Navbar";
 import MusicPlayer from "./components/musicplayer/MusicPlayer";
 import ActiveNotesDisplay from "./components/activenotesdisplay/ActiveNotesDisplay";
 import Keyboard from "./components/keyboard/Keyboard";
@@ -65,17 +66,21 @@ function App() {
   return (
     <>
       <div className="app">
-        <MusicPlayer
-          curTime={curTime}
-          setCurTime={setCurTime}
-          setAudioRecentlyToggled={setAudioRecentlyToggled}
-        />
-        <div>
-          Load a midi file{" "}
-          <input type="file" ref={midiRef} onInput={getMidiData} />
+        <Navbar />
+        <div className="body">
+          <MusicPlayer
+            curTime={curTime}
+            setCurTime={setCurTime}
+            setAudioRecentlyToggled={setAudioRecentlyToggled}
+          />
+          <div>
+            Load a midi file{" "}
+            <input type="file" ref={midiRef} onInput={getMidiData} />
+          </div>
+          <ActiveNotesDisplay curNotes={curNotes} />
+          <Keyboard activeNotes={curNotes} />
         </div>
-        <ActiveNotesDisplay curNotes={curNotes} />
-        <Keyboard activeNotes={curNotes} />
+        <div className="footer"></div>
       </div>
     </>
   );

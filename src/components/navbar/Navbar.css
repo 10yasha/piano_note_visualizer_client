@@ -1,0 +1,25 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 40px;
+  background-color: #241909;
+  color: #fff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+.navbar-left {
+  flex: 1;
+}
+
+.navbar-middle {
+  flex: 4;
+}
+
+.navbar-right {
+  flex: 1;
+  text-align: right;
+}
