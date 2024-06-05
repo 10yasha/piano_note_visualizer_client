@@ -27,10 +27,14 @@ export default function YoutubePlayer({
 }: YoutubePlayerProps) {
   const videoRef = useRef<YouTubePlayer | null>(null);
 
-  useEffect(() => {
+  const updateCurTime = async () => {
     if (videoRef.current) {
-      setCurTime(videoRef.current.getCurrentTime());
+      setCurTime(await videoRef.current.getCurrentTime());
     }
+  };
+
+  useEffect(() => {
+    updateCurTime();
   });
 
   const onPlayerReady: YouTubeProps["onReady"] = (e) => {
@@ -60,8 +64,8 @@ export default function YoutubePlayer({
   return (
     <>
       <YouTube
-        // videoId="faP8gKBuErg" // saber's edge currently
-        videoId="tW9Alr38Ha0"
+        videoId="faP8gKBuErg" // saber's edge currently
+        // videoId="tW9Alr38Ha0" // test vid so I'm not accidentally adding many views to my own vids
         opts={opts}
         onReady={onPlayerReady}
         onStateChange={onPlayerStateChange}
