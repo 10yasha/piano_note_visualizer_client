@@ -3,7 +3,7 @@ import {
   ProcessedMidi,
   NotesInfo,
   NotesPressed,
-} from "../interfaces/Interfaces";
+} from "../types/MidiTypes";
 
 export const processMidiData = (data: RawMidi) : [ProcessedMidi, NotesInfo] => {
   let rawMidiData = data.track.slice(-1)[0].event;

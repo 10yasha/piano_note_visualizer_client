@@ -12,7 +12,7 @@ import {
   ProcessedMidi,
   NotesInfo,
   NotesPressed,
-} from "./interfaces/Interfaces";
+} from "./types/MidiTypes";
 import "./App.css";
 
 import AudioPlayer from "./components/audioplayer/AudioPlayer";
