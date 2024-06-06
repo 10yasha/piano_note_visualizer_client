@@ -1,17 +1,17 @@
 import { useEffect, useRef } from "react";
 
 import { SimplifiedMidi } from "../../../types/MidiTypes";
+import { NoteDrawingSpecs } from "../../../types/GeneralTypes";
 
 // import useCanvas from "./useCanvas";
 
 interface CanvasProps {
-  draw: (context: CanvasRenderingContext2D, count: number) => void;
-  draw2: (
+  draw: (
     context: CanvasRenderingContext2D,
     activeMidiData: SimplifiedMidi,
     windSize: number,
     noteSpacing: Map<number, number>,
-    noteHalfWidth: number,
+    noteSpecs: NoteDrawingSpecs,
     curTime: number
   ) => void;
   width: number;
@@ -20,19 +20,18 @@ interface CanvasProps {
   activeMidiData: SimplifiedMidi;
   windSize: number;
   noteSpacing: Map<number, number>;
-  noteHalfWidth: number;
+  noteSpecs: NoteDrawingSpecs;
 }
 
 function Canvas({
   draw,
-  draw2,
   width,
   height,
   curTime,
   activeMidiData,
   windSize,
   noteSpacing,
-  noteHalfWidth,
+  noteSpecs,
 }: CanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   // const contextRef = useRef(null);
@@ -42,12 +41,12 @@ function Canvas({
     if (canvasRef.current) {
       const context = canvasRef.current.getContext("2d");
       if (context) {
-        draw2(
+        draw(
           context,
           activeMidiData,
           windSize,
           noteSpacing,
-          noteHalfWidth,
+          noteSpecs,
           curTime
         );
       }

@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { getNoteSpacingMap } from "../../etc/KeyboardUtils";
 import { updateWindow, normalizeMidiEvents } from "../../etc/MidiManipulation";
 import { SimplifiedMidi } from "../../types/MidiTypes";
+import { NoteDrawingSpecs } from "../../types/GeneralTypes";
 
 import Canvas from "./canvas/Canvas";
 
@@ -13,7 +14,12 @@ interface WaterfallProps {
 
 function Waterfall({ curTime, midiData }: WaterfallProps) {
   const noteSpacing = getNoteSpacingMap(22);
-  const noteHalfWidth = 16; // for drawing, in pixels
+  const noteSpecs: NoteDrawingSpecs = {
+    whiteNoteWidth: 16,
+    blackNoteWidth: 10,
+    whiteNoteColor: "#00abb4",
+    blackNoteColor: "#00abb4",
+  };
 
   // size of window in seconds containing relevant notes, from curTime-windSize to curTime+windafter
   const windSize = 5;
@@ -37,21 +43,12 @@ function Waterfall({ curTime, midiData }: WaterfallProps) {
     setActiveMidiData([...midiData].slice(windStart, windEnd));
   }, [curTime, midiData]);
 
-  const draw = (context: CanvasRenderingContext2D, count: number) => {
-    context.clearRect(0, 0, context.canvas.width, context.canvas.height);
-    context.fillStyle = "#0E2F44";
-    context.fillRect(0, 0, context.canvas.width, context.canvas.height);
-    context.fillStyle = "#00abb4";
-    const d = count % 1144;
-    context.fillRect(10 + d, 10, 100, 100);
-  };
-
-  const draw2 = (
+  const draw = (
     context: CanvasRenderingContext2D,
     activeMidiData: SimplifiedMidi,
     windSize: number,
     noteSpacing: Map<number, number>,
-    noteHalfWidth: number,
+    noteSpecs: NoteDrawingSpecs,
     curTime: number
   ) => {
     // background
@@ -59,7 +56,6 @@ function Waterfall({ curTime, midiData }: WaterfallProps) {
     context.fillStyle = "#0E2F44";
     context.fillRect(0, 0, context.canvas.width, context.canvas.height);
 
-    // console.log("curtime and active:", curTime, activeMidiData);
     const normalizedMidiEvents = normalizeMidiEvents(curTime, activeMidiData);
 
     for (const event of normalizedMidiEvents) {
@@ -70,12 +66,12 @@ function Waterfall({ curTime, midiData }: WaterfallProps) {
         const noteHeight = Math.floor(
           ((event.offset - event.onset) / windSize) * context.canvas.height
         );
-        context.fillStyle = "#00abb4";
 
+        context.fillStyle = noteSpecs.whiteNoteColor;
         context.fillRect(
-          xMidPoint - noteHalfWidth / 2,
+          xMidPoint - noteSpecs.whiteNoteWidth / 2,
           yMin,
-          noteHalfWidth,
+          noteSpecs.whiteNoteWidth,
           noteHeight
         );
       }
@@ -86,14 +82,13 @@ function Waterfall({ curTime, midiData }: WaterfallProps) {
     <>
       <Canvas
         draw={draw}
-        draw2={draw2}
         width={1144}
         height={300}
         curTime={curTime}
         activeMidiData={activeMidiData}
         windSize={windSize}
         noteSpacing={noteSpacing}
-        noteHalfWidth={noteHalfWidth}
+        noteSpecs={noteSpecs}
       />
     </>
   );
