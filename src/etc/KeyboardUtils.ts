@@ -1,3 +1,5 @@
+import { SimplifiedMidi } from "../types/MidiTypes";
+
 // Based on:
 // https://inspiredacoustics.com/en/MIDI_note_numbers_and_center_frequencies
 export const midiNumToName = new Map([
@@ -150,7 +152,7 @@ export const getNoteSpacingMap = (spacing: number) => {
     // octave 4 => 23s
     [60, 23*s], // "C4"
     [61, 23*s+hs], // "C#4"
-    [62, 24*s+hs], // "D4"
+    [62, 24*s], // "D4"
     [63, 24*s+hs], // "D#4"
     [64, 25*s], // "E4"
     [65, 26*s], // "F4"
@@ -212,6 +214,27 @@ export const getNoteSpacingMap = (spacing: number) => {
   console.log("noteSpacing calculated!")
 
   return centerXCoors;
+}
+
+// get map of pitch to boolean (true if white, false if black)
+export const getKeyIsWhiteMap = () => {
+  return new Map(Array.from(
+    midiNumToName, 
+    ([k, v]) => [k, v.length == 2 ? true : false]));
+}
+
+export const separateMidiEvents = (keyIsWhiteMap: Map<number, boolean>, midiEvents : SimplifiedMidi) => {
+  let whiteMidiEvents : SimplifiedMidi = [];
+  let blackMidiEvents : SimplifiedMidi = [];
+
+  for (const event of midiEvents) {
+    if (keyIsWhiteMap.get(event.pitch)){
+      whiteMidiEvents.push(event);
+    } else {
+      blackMidiEvents.push(event);
+    }
+  }
+  return [whiteMidiEvents, blackMidiEvents];
 }
 
 // determine change in notes [those to remove, those to add] based on prev vs cur notes

@@ -10,8 +10,9 @@ interface CanvasProps {
     context: CanvasRenderingContext2D,
     activeMidiData: SimplifiedMidi,
     windSize: number,
-    noteSpacing: Map<number, number>,
+    noteSpacingMap: Map<number, number>,
     noteSpecs: NoteDrawingSpecs,
+    keyIsWhiteMap: Map<number, boolean>,
     curTime: number
   ) => void;
   width: number;
@@ -19,8 +20,9 @@ interface CanvasProps {
   curTime: number;
   activeMidiData: SimplifiedMidi;
   windSize: number;
-  noteSpacing: Map<number, number>;
+  noteSpacingMap: Map<number, number>;
   noteSpecs: NoteDrawingSpecs;
+  keyIsWhiteMap: Map<number, boolean>;
 }
 
 function Canvas({
@@ -30,8 +32,9 @@ function Canvas({
   curTime,
   activeMidiData,
   windSize,
-  noteSpacing,
+  noteSpacingMap,
   noteSpecs,
+  keyIsWhiteMap,
 }: CanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   // const contextRef = useRef(null);
@@ -45,13 +48,14 @@ function Canvas({
           context,
           activeMidiData,
           windSize,
-          noteSpacing,
+          noteSpacingMap,
           noteSpecs,
+          keyIsWhiteMap,
           curTime
         );
       }
     }
-  }, [curTime, windSize, noteSpacing]);
+  }, [curTime, windSize, noteSpacingMap]);
 
   return <canvas ref={canvasRef} width={width} height={height} />;
 }

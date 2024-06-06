@@ -1,6 +1,10 @@
 import { useState, useEffect, useMemo } from "react";
 
-import { getNoteSpacingMap } from "../../etc/KeyboardUtils";
+import {
+  getNoteSpacingMap,
+  getKeyIsWhiteMap,
+  separateMidiEvents,
+} from "../../etc/KeyboardUtils";
 import { updateWindow, normalizeMidiEvents } from "../../etc/MidiManipulation";
 import { SimplifiedMidi } from "../../types/MidiTypes";
 import { NoteDrawingSpecs } from "../../types/GeneralTypes";
@@ -18,11 +22,12 @@ function Waterfall({
   midiData,
   audioRecentlyToggled,
 }: WaterfallProps) {
-  const noteSpacing = useMemo(() => getNoteSpacingMap(22), []);
+  const noteSpacingMap = useMemo(() => getNoteSpacingMap(22), []);
+  const keyIsWhiteMap = useMemo(() => getKeyIsWhiteMap(), []);
   const noteSpecs: NoteDrawingSpecs = {
-    whiteNoteWidth: 16,
+    whiteNoteWidth: 14,
     blackNoteWidth: 10,
-    whiteNoteColor: "#00abb4",
+    whiteNoteColor: "#03d9e5",
     blackNoteColor: "#00abb4",
   };
 
@@ -62,23 +67,16 @@ function Waterfall({
     setActiveMidiData([...midiData].slice(windStart, windEnd));
   }, [curTime, midiData, audioRecentlyToggled]);
 
-  const draw = (
+  const drawNotes = (
     context: CanvasRenderingContext2D,
-    activeMidiData: SimplifiedMidi,
+    midiEvents: SimplifiedMidi,
     windSize: number,
-    noteSpacing: Map<number, number>,
-    noteSpecs: NoteDrawingSpecs,
-    curTime: number
+    noteSpacingMap: Map<number, number>,
+    noteColor: string,
+    noteWidth: number
   ) => {
-    // background
-    context.clearRect(0, 0, context.canvas.width, context.canvas.height);
-    context.fillStyle = "#0E2F44";
-    context.fillRect(0, 0, context.canvas.width, context.canvas.height);
-
-    const normalizedMidiEvents = normalizeMidiEvents(curTime, activeMidiData);
-
-    for (const event of normalizedMidiEvents) {
-      const xMidPoint = noteSpacing.get(event.pitch);
+    for (const event of midiEvents) {
+      const xMidPoint = noteSpacingMap.get(event.pitch);
       if (xMidPoint !== undefined) {
         const yMin =
           ((windSize - event.offset) / windSize) * context.canvas.height;
@@ -86,15 +84,70 @@ function Waterfall({
           ((event.offset - event.onset) / windSize) * context.canvas.height
         );
 
-        context.fillStyle = noteSpecs.whiteNoteColor;
-        context.fillRect(
-          xMidPoint - noteSpecs.whiteNoteWidth / 2,
+        context.fillStyle = noteColor;
+
+        // draw rectangles
+        // context.fillRect(
+        //   xMidPoint - noteWidth / 2,
+        //   yMin,
+        //   noteWidth,
+        //   noteHeight
+        // );
+
+        // draw rounded rectangles
+        context.fillStyle = noteColor;
+        context.beginPath();
+        context.roundRect(
+          xMidPoint - noteWidth / 2,
           yMin,
-          noteSpecs.whiteNoteWidth,
-          noteHeight
+          noteWidth,
+          noteHeight,
+          3
         );
+        context.fill();
       }
     }
+  };
+
+  const draw = (
+    context: CanvasRenderingContext2D,
+    activeMidiData: SimplifiedMidi,
+    windSize: number,
+    noteSpacingMap: Map<number, number>,
+    noteSpecs: NoteDrawingSpecs,
+    keyIsWhiteMap: Map<number, boolean>,
+    curTime: number
+  ) => {
+    // draw background
+    context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+    context.fillStyle = "#0E2F44";
+    context.fillRect(0, 0, context.canvas.width, context.canvas.height);
+
+    const normalizedMidiEvents = normalizeMidiEvents(curTime, activeMidiData);
+
+    const [whiteMidiEvents, blackMidiEvents] = separateMidiEvents(
+      keyIsWhiteMap,
+      normalizedMidiEvents
+    );
+
+    // draw white notes first then black since white notes are thicker and underneath
+    drawNotes(
+      context,
+      whiteMidiEvents,
+      windSize,
+      noteSpacingMap,
+      noteSpecs.whiteNoteColor,
+      noteSpecs.whiteNoteWidth
+    );
+
+    drawNotes(
+      context,
+      blackMidiEvents,
+      windSize,
+      noteSpacingMap,
+      noteSpecs.blackNoteColor,
+      noteSpecs.blackNoteWidth
+    );
   };
 
   return (
@@ -106,8 +159,9 @@ function Waterfall({
         curTime={curTime}
         activeMidiData={activeMidiData}
         windSize={windSize}
-        noteSpacing={noteSpacing}
+        noteSpacingMap={noteSpacingMap}
         noteSpecs={noteSpecs}
+        keyIsWhiteMap={keyIsWhiteMap}
       />
     </>
   );
