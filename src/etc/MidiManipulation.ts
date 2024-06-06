@@ -1,14 +1,42 @@
 import {
   RawMidi,
   ProcessedMidi,
+  SimplifiedMidi,
   NotesInfo,
-  NotesPressed,
 } from "../types/MidiTypes";
 
-export const processMidiData = (data: RawMidi) : [ProcessedMidi, NotesInfo] => {
+const simplifyMidiData = (convertedMidiData : ProcessedMidi) : SimplifiedMidi => {
+  let simplifiedMidiData : SimplifiedMidi = [];
+
+  let ActiveEvents: SimplifiedMidi = []; // keep track of active events (ie. post-onset, pre-offset)
+
+  convertedMidiData.forEach((newEvent) => {
+    if (newEvent.press){
+      // this is onset event, add new event to ActiveEvents
+      ActiveEvents.push({onset: newEvent.time,
+      offset: -1, // -1 => not filled in yet
+      pitch: newEvent.pitch})
+    } else { // offset
+      // this is offset event, find the event in ActiveEvents that it corresponds to
+      const index = ActiveEvents.findIndex((previousEvent) => {previousEvent.pitch == newEvent.pitch});
+
+      // update offset time
+      ActiveEvents[index].offset = newEvent.time;
+
+      // move it from ActiveEvents to simplifiedMidiData
+      simplifiedMidiData.push(ActiveEvents[index]);
+      ActiveEvents.splice(index, 1);
+    }
+  });
+
+  return simplifiedMidiData;
+}
+
+export const processMidiData = (data: RawMidi) : [SimplifiedMidi, NotesInfo] => {
   let rawMidiData = data.track.slice(-1)[0].event;
   /* last item is empty so pop it (ex.
     { "deltaTime": 1, "type": 255, "metaType": 47})*/
+  // TODO Check this assumption???
   rawMidiData.pop();
 
   const timeConversionFactor = data.timeDivision * 2;
@@ -50,7 +78,7 @@ export const processMidiData = (data: RawMidi) : [ProcessedMidi, NotesInfo] => {
     }
   });
 
-  return [convertedMidiData, convertedNoteData];
+  return [simplifyMidiData(convertedMidiData), convertedNoteData];
 };
 
 
@@ -88,11 +116,11 @@ export const fullSearchForIndex = (curTime: number, noteData: NotesInfo) => {
   return -1;
 };
 
-// only search indices immediately above curIndex
+// only search indices immediately above curIndex since time proceeds forwards xD
 export const quickSearchForIndex = (curTime: number, curIndex: number, noteData: NotesInfo) => {
   let newIndex = curIndex;
   while (
-    newIndex < noteData.length-1 &&
+    newIndex < noteData.length - 1 &&
     curTime > noteData[newIndex + 1].time
   ) {
     newIndex += 1;
@@ -100,3 +128,36 @@ export const quickSearchForIndex = (curTime: number, curIndex: number, noteData:
 
   return newIndex;
 };
+
+// for waterfall display
+export const updateWindow = (
+  curTime: number,
+  midiData: SimplifiedMidi,
+  windStart: number, // index in midiData
+  windEnd: number, // index in midiData
+  window: number // window forwards and backwards
+) => {
+  const startTarget = curTime - window;
+  const endTarget = curTime + window;
+
+  while (windStart < midiData.length-1 && midiData[windStart].onset < startTarget) {
+    windStart++;
+  }
+
+  while (windEnd < midiData.length-1 && midiData[windEnd].onset < endTarget) {
+    windEnd++;
+  }
+
+  return [windStart, windEnd];
+};
+
+export const normalizeMidiEvents = (curTime: number, midiData: SimplifiedMidi) => {
+  // TODO understand if forEach is is place after this is working, prob is but good to learn/check
+  [...midiData].forEach((event) => {
+    event.onset = event.onset - curTime; 
+    event.offset = event.offset - curTime;
+    return event;
+  });
+
+  return midiData;
+}

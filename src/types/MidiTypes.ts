@@ -26,6 +26,14 @@ interface ProcessedMidiEvent {
   press: boolean; // true if attack, false if release
 }
 
+export type SimplifiedMidi = SimplifiedMidiEvent[];
+
+interface SimplifiedMidiEvent {
+  onset: number; // in seconds
+  offset: number; // in seconds
+  pitch: number;
+}
+
 export type NotesInfo = NotesPressed[];
 
 export interface NotesPressed {

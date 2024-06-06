@@ -99,12 +99,12 @@ export const midiNumToName = new Map([
   [108, "C8"],
 ]);
 
-// for drawing, this returns the left side x-coor given the spacing in px of a white key
+// for drawing, this returns the center x-coors of each note given the spacing in px of a white key
 export const getNoteSpacingMap = (spacing: number) => {
   const s = spacing; // spacing
   const hs = spacing/2; // half spacing
   
-  return new Map([
+  const leftXCoors = new Map([
     [21, 0], // "A0"
     [22, hs], // "A#0"
     [23, s], // "B0"
@@ -202,6 +202,14 @@ export const getNoteSpacingMap = (spacing: number) => {
     // high C => 51s
     [108, 51*s], // "C8"
   ]);
+  
+  // will use centerXCoors
+  const centerXCoors = new Map(Array.from(
+    leftXCoors, 
+    ([k, v]) => [k, v+hs]
+));
+
+  return centerXCoors;
 }
 
 // determine change in notes [those to remove, those to add] based on prev vs cur notes

@@ -6,7 +6,7 @@ import {
   fullSearchForIndex,
   quickSearchForIndex,
 } from "./etc/MidiManipulation";
-import { RawMidi, ProcessedMidi, NotesInfo } from "./types/MidiTypes";
+import { RawMidi, SimplifiedMidi, NotesInfo } from "./types/MidiTypes";
 import "./App.css";
 
 import Navbar from "./components/navbar/Navbar";
@@ -18,7 +18,7 @@ import Keyboard from "./components/keyboard/Keyboard";
 function App() {
   const [curTime, setCurTime] = useState<number>(0);
 
-  const [midiData, setMidiData] = useState<ProcessedMidi>([]);
+  const [midiData, setMidiData] = useState<SimplifiedMidi>([]);
   const [noteData, setNoteData] = useState<NotesInfo>([]);
   const [curNotes, setCurNotes] = useState<number[]>([]); // by midi number
   const [audioRecentlyToggled, setAudioRecentlyToggled] =
@@ -41,10 +41,10 @@ function App() {
     const midi = midiRef.current;
     if (midi) {
       MidiParser.parse(midi, (data: RawMidi) => {
-        const [convertedMidiData, convertedNoteData] = processMidiData(data);
+        const [midiData, noteData] = processMidiData(data);
 
-        setMidiData(convertedMidiData);
-        setNoteData(convertedNoteData);
+        setMidiData(midiData);
+        setNoteData(noteData);
       });
     }
   };
@@ -79,7 +79,7 @@ function App() {
             <input type="file" ref={midiRef} onInput={getMidiData} />
           </div>
           <ActiveNotesDisplay curNotes={curNotes} />
-          <Waterfall />
+          <Waterfall midiData={midiData} curTime={curTime} />
           <Keyboard activeNotes={curNotes} />
         </div>
         <div className="footer"></div>
