@@ -28,7 +28,7 @@ interface ProcessedMidiEvent {
 
 export type SimplifiedMidi = SimplifiedMidiEvent[];
 
-interface SimplifiedMidiEvent {
+export interface SimplifiedMidiEvent {
   onset: number; // in seconds
   offset: number; // in seconds
   pitch: number;

@@ -2,6 +2,7 @@ import {
   RawMidi,
   ProcessedMidi,
   SimplifiedMidi,
+  SimplifiedMidiEvent,
   NotesInfo,
 } from "../types/MidiTypes";
 
@@ -11,14 +12,18 @@ const simplifyMidiData = (convertedMidiData : ProcessedMidi) : SimplifiedMidi =>
   let ActiveEvents: SimplifiedMidi = []; // keep track of active events (ie. post-onset, pre-offset)
 
   convertedMidiData.forEach((newEvent) => {
+    // console.log(newEvent)
     if (newEvent.press){
       // this is onset event, add new event to ActiveEvents
       ActiveEvents.push({onset: newEvent.time,
       offset: -1, // -1 => not filled in yet
       pitch: newEvent.pitch})
-    } else { // offset
+    } else {
       // this is offset event, find the event in ActiveEvents that it corresponds to
-      const index = ActiveEvents.findIndex((previousEvent) => {previousEvent.pitch == newEvent.pitch});
+      const index = ActiveEvents.findIndex((previousEvent) => previousEvent.pitch == newEvent.pitch);
+      if (index === undefined || index < 0){
+        console.log("big problem: ", index, newEvent)
+      }
 
       // update offset time
       ActiveEvents[index].offset = newEvent.time;
@@ -140,24 +145,33 @@ export const updateWindow = (
   const startTarget = curTime - window;
   const endTarget = curTime + window;
 
+  // console.log("targets:", startTarget, endTarget);
+
   while (windStart < midiData.length-1 && midiData[windStart].onset < startTarget) {
+    // console.log("midiData[windStart].onset", midiData[windStart].onset);
     windStart++;
   }
 
   while (windEnd < midiData.length-1 && midiData[windEnd].onset < endTarget) {
+    // console.log("midiData[windEnd].onset", midiData[windEnd].onset);
     windEnd++;
   }
+
+  // console.log("new wind", windStart, windEnd);
 
   return [windStart, windEnd];
 };
 
 export const normalizeMidiEvents = (curTime: number, midiData: SimplifiedMidi) => {
-  // TODO understand if forEach is is place after this is working, prob is but good to learn/check
-  [...midiData].forEach((event) => {
-    event.onset = event.onset - curTime; 
-    event.offset = event.offset - curTime;
-    return event;
+  let normalizedEvents : SimplifiedMidi = [];
+  midiData.forEach((event) => {
+    let normalizedEvent: SimplifiedMidiEvent = {
+      onset: event.onset - curTime,
+      offset: event.offset - curTime,
+      pitch: event.pitch
+    }
+    normalizedEvents.push(normalizedEvent);
   });
 
-  return midiData;
+  return normalizedEvents;
 }

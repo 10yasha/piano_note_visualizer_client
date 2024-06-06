@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 import { getNoteSpacingMap } from "../../etc/KeyboardUtils";
-import { updateWindow } from "../../etc/MidiManipulation";
+import { updateWindow, normalizeMidiEvents } from "../../etc/MidiManipulation";
 import { SimplifiedMidi } from "../../types/MidiTypes";
 
 import Canvas from "./canvas/Canvas";
@@ -13,7 +13,7 @@ interface WaterfallProps {
 
 function Waterfall({ curTime, midiData }: WaterfallProps) {
   const noteSpacing = getNoteSpacingMap(22);
-  const noteWidth = 18; // for drawing, in pixels
+  const noteHalfWidth = 16; // for drawing, in pixels
 
   // size of window in seconds containing relevant notes, from curTime-windSize to curTime+windafter
   const windSize = 5;
@@ -21,6 +21,7 @@ function Waterfall({ curTime, midiData }: WaterfallProps) {
   // active notes window defined by index
   const [windStart, setWindStart] = useState<number>(0);
   const [windEnd, setWindEnd] = useState<number>(0);
+  const [activeMidiData, setActiveMidiData] = useState<SimplifiedMidi>([]);
 
   useEffect(() => {
     const [newWindStart, newWindEnd] = updateWindow(
@@ -32,6 +33,8 @@ function Waterfall({ curTime, midiData }: WaterfallProps) {
     );
     setWindStart(newWindStart);
     setWindEnd(newWindEnd);
+
+    setActiveMidiData([...midiData].slice(windStart, windEnd));
   }, [curTime, midiData]);
 
   const draw = (context: CanvasRenderingContext2D, count: number) => {
@@ -48,28 +51,50 @@ function Waterfall({ curTime, midiData }: WaterfallProps) {
     activeMidiData: SimplifiedMidi,
     windSize: number,
     noteSpacing: Map<number, number>,
-    noteWidth: number
+    noteHalfWidth: number,
+    curTime: number
   ) => {
     // background
     context.clearRect(0, 0, context.canvas.width, context.canvas.height);
     context.fillStyle = "#0E2F44";
     context.fillRect(0, 0, context.canvas.width, context.canvas.height);
 
-    // draw all the notes
-    for (const event of activeMidiData) {
-      const noteHeight = Math.floor((event.offset - event.onset) / windSize);
-      const xMin = noteSpacing.get(event.pitch);
-      const yMin = windSize - event.offset;
-      if (xMin !== undefined) {
+    // console.log("curtime and active:", curTime, activeMidiData);
+    const normalizedMidiEvents = normalizeMidiEvents(curTime, activeMidiData);
+
+    for (const event of normalizedMidiEvents) {
+      const xMidPoint = noteSpacing.get(event.pitch);
+      if (xMidPoint !== undefined) {
+        const yMin =
+          ((windSize - event.offset) / windSize) * context.canvas.height;
+        const noteHeight = Math.floor(
+          ((event.offset - event.onset) / windSize) * context.canvas.height
+        );
         context.fillStyle = "#00abb4";
-        context.fillRect(xMin, yMin, noteWidth, noteHeight);
+
+        context.fillRect(
+          xMidPoint - noteHalfWidth / 2,
+          yMin,
+          noteHalfWidth,
+          noteHeight
+        );
       }
     }
   };
 
   return (
     <>
-      <Canvas draw={draw} width="1144" height="300" />
+      <Canvas
+        draw={draw}
+        draw2={draw2}
+        width={1144}
+        height={300}
+        curTime={curTime}
+        activeMidiData={activeMidiData}
+        windSize={windSize}
+        noteSpacing={noteSpacing}
+        noteHalfWidth={noteHalfWidth}
+      />
     </>
   );
 }
