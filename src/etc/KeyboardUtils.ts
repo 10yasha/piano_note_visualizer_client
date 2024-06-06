@@ -99,6 +99,111 @@ export const midiNumToName = new Map([
   [108, "C8"],
 ]);
 
+// for drawing, this returns the left side x-coor given the spacing in px of a white key
+export const getNoteSpacing = (spacing: number) => {
+  const s = spacing; // spacing
+  const hs = spacing/2; // half spacing
+  
+  return new Map([
+    [21, 0], // "A0"
+    [22, hs], // "A#0"
+    [23, s], // "B0"
+    // octave 1 => 2s
+    [24, 2*s], // "C1"
+    [25, 2*s+hs], // "C#1"
+    [26, 3*s], // "D1"
+    [27, 3*s+hs], // "D#1"
+    [28, 4*s], // "E1"
+    [29, 5*s], // "F1"
+    [30, 5*s+hs], // "F#1"
+    [31, 6*s], // "G1"
+    [32, 6*s+hs], // "G#1"
+    [33, 7*s], // "A1"
+    [34, 7*s+hs], // "A#1"
+    [35, 8*s], // "B1"
+    // octave 2 => 9s
+    [36, 9*s], // "C2"
+    [37, 9*s+hs], // "C#2"
+    [38, 10*s], // "D2"
+    [39, 10*s+hs], // "D#2"
+    [40, 11*s], //"E2"
+    [41, 12*s], // "F2"
+    [42, 12*s+hs], // "F#2"
+    [43, 13*s], // "G2"
+    [44, 13*s+hs], // "G#2"
+    [45, 14*s], // "A2"
+    [46, 14*s+hs], // "A#2"
+    [47, 15*s], // "B2"
+    // octave 3 => 16s
+    [48, 16*s], // "C3"
+    [49, 16*s+hs], // "C#3"
+    [50, 17*s], // "D3"
+    [51, 17*s+hs], // "D#3"
+    [52, 18*s], // "E3"
+    [53, 19*s], // "F3"
+    [54, 19*s+hs], // "F#3"
+    [55, 20*s], // "G3"
+    [56, 20*s+hs], // "G#3"
+    [57, 21*s], // "A3"
+    [58, 21*s], // "A#3"
+    [59, 22*s], // "B3"
+    // octave 4 => 23s
+    [60, 23*s], // "C4"
+    [61, 23*s+hs], // "C#4"
+    [62, 24*s+hs], // "D4"
+    [63, 24*s+hs], // "D#4"
+    [64, 25*s], // "E4"
+    [65, 26*s], // "F4"
+    [66, 26*s+hs], // "F#4"
+    [67, 27*s], // "G4"
+    [68, 27*s+hs], // "G#4"
+    [69, 28*s], // "A4"
+    [70, 28*s+hs], // "A#4"
+    [71, 29*s], // "B4"
+    // octave 5 => 30s
+    [72, 30*s], // "C5"
+    [73, 30*s+hs], // "C#5"
+    [74, 31*s], // "D5"
+    [75, 31*s+hs], // "D#5"
+    [76, 32*s], // "E5"
+    [77, 33*s], // "F5"
+    [78, 33*s+hs], // "F#5"
+    [79, 34*s], // "G5"
+    [80, 34*s+hs], // "G#5"
+    [81, 35*s], // "A5"
+    [82, 35*s+hs], // "A#5"
+    [83, 36*s], // "B5"
+    // octave 6 => 37s
+    [84, 37*s], // "C6"
+    [85, 37*s+hs], // "C#6"
+    [86, 38*s], // "D6"
+    [87, 38*s+hs], // "D#6"
+    [88, 39*s], // "E6"
+    [89, 40*s], // "F6"
+    [90, 40*s+hs], // "F#6"
+    [91, 41*s], // "G6"
+    [92, 41*s+hs], // "G#6"
+    [93, 42*s], // "A6"
+    [94, 42*s+hs], // "A#6"
+    [95, 43*s], // "B6"
+    // octave 7 => 44s
+    [96, 44*s], // "C7"
+    [97, 44*s+hs], // "C#7"
+    [98, 45*s], // "D7"
+    [99, 45*s+hs], // "D#7"
+    [100, 46*s], // "E7"
+    [101, 47*s], // "F7"
+    [102, 47*s+hs], // "F#7"
+    [103, 48*s], // "G7"
+    [104, 48*s+hs], // "G#7"
+    [105, 49*s], // "A7"
+    [106, 49*s+hs], // "A#7"
+    [107, 50*s], // "B7"
+    // high C => 51s
+    [108, 51*s], // "C8"
+  ]);
+}
+
 // determine change in notes [those to remove, those to add] based on prev vs cur notes
 export const findActiveNotesDiff = (prevNotes : number[], curNotes : number[]) => {
   const intersection = prevNotes.filter(note => curNotes.includes(note));
