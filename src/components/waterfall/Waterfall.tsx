@@ -10,9 +10,14 @@ import Canvas from "./canvas/Canvas";
 interface WaterfallProps {
   curTime: number;
   midiData: SimplifiedMidi;
+  audioRecentlyToggled: boolean;
 }
 
-function Waterfall({ curTime, midiData }: WaterfallProps) {
+function Waterfall({
+  curTime,
+  midiData,
+  audioRecentlyToggled,
+}: WaterfallProps) {
   const noteSpacing = useMemo(() => getNoteSpacingMap(22), []);
   const noteSpecs: NoteDrawingSpecs = {
     whiteNoteWidth: 16,
@@ -30,18 +35,32 @@ function Waterfall({ curTime, midiData }: WaterfallProps) {
   const [activeMidiData, setActiveMidiData] = useState<SimplifiedMidi>([]);
 
   useEffect(() => {
-    const [newWindStart, newWindEnd] = updateWindow(
-      curTime,
-      midiData,
-      windStart,
-      windEnd,
-      windSize
-    );
+    let newWindStart: number, newWindEnd: number;
+    if (audioRecentlyToggled) {
+      // perform full search if audio was recently toggled/moved
+      [newWindStart, newWindEnd] = updateWindow(
+        curTime,
+        midiData,
+        0,
+        0,
+        windSize
+      );
+    } else {
+      // only perform search to the right of current window indices, more efficient
+      [newWindStart, newWindEnd] = updateWindow(
+        curTime,
+        midiData,
+        windStart,
+        windEnd,
+        windSize
+      );
+    }
+
     setWindStart(newWindStart);
     setWindEnd(newWindEnd);
 
     setActiveMidiData([...midiData].slice(windStart, windEnd));
-  }, [curTime, midiData]);
+  }, [curTime, midiData, audioRecentlyToggled]);
 
   const draw = (
     context: CanvasRenderingContext2D,

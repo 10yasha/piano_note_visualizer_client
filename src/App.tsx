@@ -79,7 +79,11 @@ function App() {
             <input type="file" ref={midiRef} onInput={getMidiData} />
           </div>
           <ActiveNotesDisplay curNotes={curNotes} />
-          <Waterfall midiData={midiData} curTime={curTime} />
+          <Waterfall
+            midiData={midiData}
+            curTime={curTime}
+            audioRecentlyToggled={audioRecentlyToggled}
+          />
           <Keyboard activeNotes={curNotes} />
         </div>
         <div className="footer"></div>
