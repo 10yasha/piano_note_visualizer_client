@@ -209,6 +209,8 @@ export const getNoteSpacingMap = (spacing: number) => {
     ([k, v]) => [k, v+hs]
 ));
 
+  console.log("noteSpacing calculated!")
+
   return centerXCoors;
 }
 

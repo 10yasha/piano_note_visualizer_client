@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 import { getNoteSpacingMap } from "../../etc/KeyboardUtils";
 import { updateWindow, normalizeMidiEvents } from "../../etc/MidiManipulation";
@@ -13,7 +13,7 @@ interface WaterfallProps {
 }
 
 function Waterfall({ curTime, midiData }: WaterfallProps) {
-  const noteSpacing = getNoteSpacingMap(22);
+  const noteSpacing = useMemo(() => getNoteSpacingMap(22), []);
   const noteSpecs: NoteDrawingSpecs = {
     whiteNoteWidth: 16,
     blackNoteWidth: 10,
