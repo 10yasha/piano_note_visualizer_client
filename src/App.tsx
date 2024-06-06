@@ -12,6 +12,7 @@ import "./App.css";
 import Navbar from "./components/navbar/Navbar";
 import MusicPlayer from "./components/musicplayer/MusicPlayer";
 import ActiveNotesDisplay from "./components/activenotesdisplay/ActiveNotesDisplay";
+import Waterfall from "./components/waterfall/Waterfall";
 import Keyboard from "./components/keyboard/Keyboard";
 
 function App() {
@@ -78,6 +79,7 @@ function App() {
             <input type="file" ref={midiRef} onInput={getMidiData} />
           </div>
           <ActiveNotesDisplay curNotes={curNotes} />
+          <Waterfall />
           <Keyboard activeNotes={curNotes} />
         </div>
         <div className="footer"></div>

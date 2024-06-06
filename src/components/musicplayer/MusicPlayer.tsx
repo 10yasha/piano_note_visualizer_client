@@ -3,7 +3,7 @@ import { useState, useRef } from "react";
 import AudioPlayer from "./audioplayer/AudioPlayer";
 import YoutubePlayer from "./youtubeplayer/YoutubePlayer";
 import { Player } from "../../types/GeneralTypes";
-import Button from "../Button/Button";
+import Button from "../button/Button";
 
 import "./MusicPlayer.css";
 
@@ -58,7 +58,7 @@ export default function MusicPlayer({
 
   return (
     <>
-      <Button onClick={swapPlayer} label="swap" />
+      <Button onClick={swapPlayer} label="swap video/audio" />
       <div className="player-container">
         {player == "youtube" ? (
           <YoutubePlayer

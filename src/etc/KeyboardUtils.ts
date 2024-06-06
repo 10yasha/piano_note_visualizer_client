@@ -100,7 +100,7 @@ export const midiNumToName = new Map([
 ]);
 
 // for drawing, this returns the left side x-coor given the spacing in px of a white key
-export const getNoteSpacing = (spacing: number) => {
+export const getNoteSpacingMap = (spacing: number) => {
   const s = spacing; // spacing
   const hs = spacing/2; // half spacing
   

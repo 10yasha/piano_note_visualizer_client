@@ -1,5 +1,3 @@
-import React from "react";
-
 import SearchBar from "./searchbar/SearchBar";
 import { RecordInfo } from "../../types/GeneralTypes";
 
