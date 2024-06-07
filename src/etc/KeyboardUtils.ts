@@ -147,7 +147,7 @@ export const getNoteSpacingMap = (spacing: number) => {
     [55, 20*s], // "G3"
     [56, 20*s+hs], // "G#3"
     [57, 21*s], // "A3"
-    [58, 21*s], // "A#3"
+    [58, 21*s+hs], // "A#3"
     [59, 22*s], // "B3"
     // octave 4 => 23s
     [60, 23*s], // "C4"

@@ -37,8 +37,6 @@ function Canvas({
   keyIsWhiteMap,
 }: CanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  // const contextRef = useRef(null);
-  // const ref = useCanvas(draw, draw2);
 
   useEffect(() => {
     if (canvasRef.current) {

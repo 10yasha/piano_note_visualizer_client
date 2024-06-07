@@ -140,28 +140,22 @@ export const updateWindow = (
   midiData: SimplifiedMidi,
   windStart: number, // index in midiData
   windEnd: number, // index in midiData
-  window: number // window forwards and backwards
+  WindSize: number, // window to show upcoming notes, in seconds
 ) => {
-  const startTarget = curTime - window;
-  const endTarget = curTime + window;
+  const endTarget = curTime + WindSize;
 
-  // console.log("targets:", startTarget, endTarget);
-
-  while (windStart < midiData.length-1 && midiData[windStart].onset < startTarget) {
-    // console.log("midiData[windStart].onset", midiData[windStart].onset);
+  while (windStart < midiData.length-1 && midiData[windStart].offset < curTime) {
     windStart++;
   }
 
   while (windEnd < midiData.length-1 && midiData[windEnd].onset < endTarget) {
-    // console.log("midiData[windEnd].onset", midiData[windEnd].onset);
     windEnd++;
   }
-
-  // console.log("new wind", windStart, windEnd);
 
   return [windStart, windEnd];
 };
 
+// subrtract curTime from note onset and offset times
 export const normalizeMidiEvents = (curTime: number, midiData: SimplifiedMidi) => {
   let normalizedEvents : SimplifiedMidi = [];
   midiData.forEach((event) => {

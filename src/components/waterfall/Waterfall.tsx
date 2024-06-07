@@ -31,7 +31,7 @@ function Waterfall({
     blackNoteColor: "#00abb4",
   };
 
-  // size of window in seconds containing relevant notes, from curTime-windSize to curTime+windafter
+  // size of window in seconds containing relevant notes, for after and before curTime
   const windSize = 5;
 
   // active notes window defined by index
@@ -86,7 +86,7 @@ function Waterfall({
 
         context.fillStyle = noteColor;
 
-        // draw rectangles
+        // draw normal rectangles
         // context.fillRect(
         //   xMidPoint - noteWidth / 2,
         //   yMin,
@@ -112,7 +112,7 @@ function Waterfall({
   const draw = (
     context: CanvasRenderingContext2D,
     activeMidiData: SimplifiedMidi,
-    windSize: number,
+    postWindSize: number,
     noteSpacingMap: Map<number, number>,
     noteSpecs: NoteDrawingSpecs,
     keyIsWhiteMap: Map<number, boolean>,
@@ -130,11 +130,11 @@ function Waterfall({
       normalizedMidiEvents
     );
 
-    // draw white notes first then black since white notes are thicker and underneath
+    // draw white notes first then black since white notes must be underneath
     drawNotes(
       context,
       whiteMidiEvents,
-      windSize,
+      postWindSize,
       noteSpacingMap,
       noteSpecs.whiteNoteColor,
       noteSpecs.whiteNoteWidth
@@ -143,7 +143,7 @@ function Waterfall({
     drawNotes(
       context,
       blackMidiEvents,
-      windSize,
+      postWindSize,
       noteSpacingMap,
       noteSpecs.blackNoteColor,
       noteSpecs.blackNoteWidth
