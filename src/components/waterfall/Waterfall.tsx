@@ -34,7 +34,7 @@ function Waterfall({
   };
 
   // size of window in seconds containing relevant notes, for after and before curTime
-  const windSize = 5;
+  const windSize = 4;
 
   // active notes window defined by index
   const [windStart, setWindStart] = useState<number>(0);

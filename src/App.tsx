@@ -75,7 +75,7 @@ function App() {
             setAudioRecentlyToggled={setAudioRecentlyToggled}
           />
           <div>
-            Load a midi file{" "}
+            Load corresponding midi file{" "}
             <input type="file" ref={midiRef} onInput={getMidiData} />
           </div>
           <ActiveNotesDisplay curNotes={curNotes} />

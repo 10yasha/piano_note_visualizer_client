@@ -17,6 +17,15 @@
 .search-icon {
   height: 35px;
   width: 35px;
+  color: #00abb4;
+  background-color: white;
+  display: grid;
+  place-items: center;
+}
+
+.close-icon {
+  height: 35px;
+  width: 35px;
   color: black;
   background-color: white;
   display: grid;

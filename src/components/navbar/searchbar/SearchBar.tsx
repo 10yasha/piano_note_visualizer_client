@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./SearchBar.css";
 
-import SearchIcon from "@mui/icons-material/Search";
+import AlbumIcon from "@mui/icons-material/Album";
 import CloseIcon from "@mui/icons-material/Close";
 
 import { RecordInfo } from "../../../types/GeneralTypes";
@@ -61,13 +61,16 @@ export default function SearchBar({
           value={searchEntered}
           onChange={handleSearch}
         />
-        <div className="search-icon">
-          {searchEntered.length === 0 ? (
-            <SearchIcon />
-          ) : (
+
+        {searchEntered.length === 0 ? (
+          <div className="search-icon">
+            <AlbumIcon />
+          </div>
+        ) : (
+          <div className="close-icon">
             <CloseIcon id="clearBtn" onClick={clearInput} />
-          )}
-        </div>
+          </div>
+        )}
       </div>
       {filteredRecords.length != 0 && (
         <div className="search-result">
