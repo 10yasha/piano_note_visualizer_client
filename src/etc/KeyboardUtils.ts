@@ -216,12 +216,19 @@ export const getNoteSpacingMap = (spacing: number) => {
   return centerXCoors;
 }
 
-// get map of pitch to boolean (true if white, false if black)
+// returns map of pitch to boolean (true if white, false if black)
 export const getKeyIsWhiteMap = () => {
   return new Map(Array.from(
     midiNumToName, 
     ([k, v]) => [k, v.length == 2 ? true : false]));
 }
+
+// returns array of vertical divider's x-coordinates for waterfall display
+export const getWaterfallLines = (spacing: number) => {
+  const s = spacing;
+  return new Array(2*s, 5*s, 9*s, 12*s, 16*s, 19*s, 23*s, 26*s, 30*s, 33*s, 37*s, 40*s, 44*s, 47*s, 51*s);
+}
+export const a = new Array([]);
 
 export const separateMidiEvents = (keyIsWhiteMap: Map<number, boolean>, midiEvents : SimplifiedMidi) => {
   let whiteMidiEvents : SimplifiedMidi = [];

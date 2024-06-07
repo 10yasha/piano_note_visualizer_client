@@ -34,7 +34,7 @@ const simplifyMidiData = (convertedMidiData : ProcessedMidi) : SimplifiedMidi =>
     }
   });
 
-  return simplifiedMidiData;
+  return simplifiedMidiData.sort((eventA, eventB) => { return eventA.onset - eventB.onset });
 }
 
 export const processMidiData = (data: RawMidi) : [SimplifiedMidi, NotesInfo] => {

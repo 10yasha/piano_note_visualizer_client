@@ -3,6 +3,7 @@ import { useState, useEffect, useMemo } from "react";
 import {
   getNoteSpacingMap,
   getKeyIsWhiteMap,
+  getWaterfallLines,
   separateMidiEvents,
 } from "../../etc/KeyboardUtils";
 import { updateWindow, normalizeMidiEvents } from "../../etc/MidiManipulation";
@@ -23,6 +24,7 @@ function Waterfall({
   audioRecentlyToggled,
 }: WaterfallProps) {
   const noteSpacingMap = useMemo(() => getNoteSpacingMap(22), []);
+  const waterfallDividers = useMemo(() => getWaterfallLines(22), []);
   const keyIsWhiteMap = useMemo(() => getKeyIsWhiteMap(), []);
   const noteSpecs: NoteDrawingSpecs = {
     whiteNoteWidth: 14,
@@ -84,9 +86,8 @@ function Waterfall({
           ((event.offset - event.onset) / windSize) * context.canvas.height
         );
 
-        context.fillStyle = noteColor;
-
         // draw normal rectangles
+        // context.fillStyle = noteColor;
         // context.fillRect(
         //   xMidPoint - noteWidth / 2,
         //   yMin,
@@ -122,6 +123,11 @@ function Waterfall({
     context.clearRect(0, 0, context.canvas.width, context.canvas.height);
     context.fillStyle = "#0E2F44";
     context.fillRect(0, 0, context.canvas.width, context.canvas.height);
+
+    for (const dividerXCoor of waterfallDividers) {
+      context.fillStyle = "#1b5c85";
+      context.fillRect(dividerXCoor, 0, 1, context.canvas.height);
+    }
 
     const normalizedMidiEvents = normalizeMidiEvents(curTime, activeMidiData);
 
