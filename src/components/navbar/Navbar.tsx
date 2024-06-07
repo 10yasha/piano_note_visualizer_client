@@ -32,6 +32,7 @@ function Navbar() {
       <div className="navbar-left">
         <button className="navbar-btn">Home</button>
         <button className="navbar-btn">Browse</button>
+        <button className="navbar-btn">About</button>
       </div>
       <div className="navbar-middle">
         <SearchBar
