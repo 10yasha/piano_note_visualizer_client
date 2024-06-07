@@ -5,6 +5,9 @@
 .key {
   height: calc(var(--width) * 4);
   width: var(--width);
+  display: flex;
+  justify-content: center; /* Centers horizontally */
+  align-items: flex-end;   /* Aligns at the bottom */
 }
 
 .white {
@@ -29,4 +32,10 @@
 .black.active {
   /* background-color: #0fb400; */
   background-color: #00abb4;
+}
+
+h4 {
+  color: #dedede;
+  margin: 3px;
+  padding: 0;
 }

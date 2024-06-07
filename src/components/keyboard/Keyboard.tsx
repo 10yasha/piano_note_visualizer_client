@@ -31,7 +31,13 @@ export default function Keyboard({ activeNotes }: { activeNotes: number[] }) {
             key={keyNum.toString()}
             id={keyNum.toString()}
             className={(noteName.length == 3 ? "black" : "white") + " key"}
-          ></div>
+          >
+            <h4>
+              {noteName.startsWith("C") && noteName.length == 2
+                ? noteName.at(1)
+                : ""}
+            </h4>
+          </div>
         );
       })}
     </div>
