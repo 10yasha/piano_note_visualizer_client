@@ -3,13 +3,13 @@ import { useState, useEffect } from "react";
 import { midiNumToName, findActiveNotesDiff } from "../../etc/KeyboardUtils";
 import "./Keyboard.css";
 
-export default function Keyboard({ activeNotes }: { activeNotes: number[] }) {
+export default function Keyboard({ newNotes }: { newNotes: number[] }) {
   const [pressedNotes, setPressedNotes] = useState<number[]>([]);
 
   useEffect(() => {
     const [notesToRemove, notesToAdd] = findActiveNotesDiff(
       pressedNotes,
-      activeNotes
+      newNotes
     );
 
     notesToRemove.forEach((midiId) => {
@@ -20,8 +20,8 @@ export default function Keyboard({ activeNotes }: { activeNotes: number[] }) {
       document.getElementById(midiId.toString())?.classList.add("active");
     });
 
-    setPressedNotes(activeNotes);
-  }, [activeNotes]);
+    setPressedNotes(newNotes);
+  }, [newNotes]);
 
   return (
     <div className="keyboard">
