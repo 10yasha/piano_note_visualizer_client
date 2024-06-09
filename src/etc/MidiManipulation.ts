@@ -9,24 +9,23 @@ import {
 const simplifyMidiData = (convertedMidiData : ProcessedMidi) : SimplifiedMidi => {
   let simplifiedMidiData : SimplifiedMidi = [];
 
-  let ActiveEvents: SimplifiedMidi = []; // keep track of active events (ie. post-onset, pre-offset)
+  let ActiveEvents: SimplifiedMidi = []; // keep track of active events (ie. post-attack, pre-release)
 
   convertedMidiData.forEach((newEvent) => {
-    // console.log(newEvent)
     if (newEvent.press){
-      // this is onset event, add new event to ActiveEvents
-      ActiveEvents.push({onset: newEvent.time,
-      offset: -1, // -1 => not filled in yet
+      // this is attack event, add new event to ActiveEvents
+      ActiveEvents.push({attack: newEvent.time,
+      release: -1, // -1 => not filled in yet
       pitch: newEvent.pitch})
     } else {
-      // this is offset event, find the event in ActiveEvents that it corresponds to
+      // this is release event, find the event in ActiveEvents that it corresponds to
       const index = ActiveEvents.findIndex((previousEvent) => previousEvent.pitch == newEvent.pitch);
       if (index === undefined || index < 0){
-        console.log("big problem: ", index, newEvent)
+        console.error("Attempting to simplify midi did not match release event - index:", index, "event:", newEvent)
       }
 
-      // update offset time
-      ActiveEvents[index].offset = newEvent.time;
+      // update release time
+      ActiveEvents[index].release = newEvent.time;
 
       // move it from ActiveEvents to simplifiedMidiData
       simplifiedMidiData.push(ActiveEvents[index]);
@@ -34,7 +33,7 @@ const simplifyMidiData = (convertedMidiData : ProcessedMidi) : SimplifiedMidi =>
     }
   });
 
-  return simplifiedMidiData.sort((eventA, eventB) => { return eventA.onset - eventB.onset });
+  return simplifiedMidiData.sort((eventA, eventB) => { return eventA.attack - eventB.attack });
 }
 
 export const processMidiData = (data: RawMidi) : [SimplifiedMidi, NotesInfo] => {
@@ -144,11 +143,11 @@ export const updateWindow = (
 ) => {
   const endTarget = curTime + WindSize;
 
-  while (windStart < midiData.length-1 && midiData[windStart].offset < curTime) {
+  while (windStart < midiData.length-1 && midiData[windStart].release < curTime) {
     windStart++;
   }
 
-  while (windEnd < midiData.length-1 && midiData[windEnd].onset < endTarget) {
+  while (windEnd < midiData.length-1 && midiData[windEnd].attack < endTarget) {
     windEnd++;
   }
 
@@ -160,8 +159,8 @@ export const normalizeMidiEvents = (curTime: number, midiData: SimplifiedMidi) =
   let normalizedEvents : SimplifiedMidi = [];
   midiData.forEach((event) => {
     let normalizedEvent: SimplifiedMidiEvent = {
-      onset: event.onset - curTime,
-      offset: event.offset - curTime,
+      attack: event.attack - curTime,
+      release: event.release - curTime,
       pitch: event.pitch
     }
     normalizedEvents.push(normalizedEvent);

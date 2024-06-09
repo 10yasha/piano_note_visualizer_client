@@ -42,12 +42,12 @@ export default function AudioPlayer({
         audio.play();
         setIsPlaying(true);
         syncCounter(true);
-        console.log("music playing");
+        console.debug("music playing");
       } else {
         audio.pause();
         setIsPlaying(false);
         syncCounter(false);
-        console.log("music paused");
+        console.debug("music paused");
       }
     }
   };
@@ -59,9 +59,9 @@ export default function AudioPlayer({
     ).toFixed(2);
     const time = e.currentTarget.currentTime;
 
-    // if time moved before curTime or big adjustment made, perform full search
+    // if curTime gets moved backwards or big adjustment made, full search to get back on track
     if (time < curTime || Math.abs(time - curTime) > 1) {
-      console.log("side effect syncCounter called, isPlaying:", isPlaying);
+      console.debug("big time adjustment, isPlaying is", isPlaying);
       syncCounter(isPlaying);
     }
 

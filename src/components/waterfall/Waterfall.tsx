@@ -81,9 +81,9 @@ function Waterfall({
       const xMidPoint = noteSpacingMap.get(event.pitch);
       if (xMidPoint !== undefined) {
         const yMin =
-          ((windSize - event.offset) / windSize) * context.canvas.height;
+          ((windSize - event.release) / windSize) * context.canvas.height;
         const noteHeight = Math.floor(
-          ((event.offset - event.onset) / windSize) * context.canvas.height
+          ((event.release - event.attack) / windSize) * context.canvas.height
         );
 
         // draw normal rectangles

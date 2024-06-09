@@ -39,15 +39,15 @@ export default function YoutubePlayer({
 
   const onPlayerReady: YouTubeProps["onReady"] = (e) => {
     videoRef.current = e.target;
-    console.log("youtube ready");
+    console.debug("youtube ready");
   };
 
   const onPlayerStateChange: YouTubeProps["onStateChange"] = (e) => {
     if (e.data == YTState.playing) {
-      console.log("youtube playing");
+      console.debug("youtube playing");
       syncCounter(true);
     } else if (e.data == YTState.paused) {
-      console.log("youtube paused");
+      console.debug("youtube paused");
       syncCounter(false);
     }
   };
@@ -64,8 +64,8 @@ export default function YoutubePlayer({
   return (
     <>
       <YouTube
-        // videoId="faP8gKBuErg" // saber's edge
-        videoId="_HZRiwDz-9M" // color your night
+        videoId="faP8gKBuErg" // saber's edge
+        // videoId="_HZRiwDz-9M" // color your night
         // videoId="tW9Alr38Ha0" // test vid so I'm not adding too many views to my own vids
         opts={opts}
         onReady={onPlayerReady}

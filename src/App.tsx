@@ -84,7 +84,7 @@ function App() {
             curTime={curTime}
             audioRecentlyToggled={audioRecentlyToggled}
           />
-          <Keyboard activeNotes={curNotes} />
+          <Keyboard newNotes={curNotes} />
         </div>
         <div className="footer"></div>
       </div>

@@ -5,7 +5,7 @@ import "./Navbar.css";
 
 function Navbar() {
   const handleSearch = (record: RecordInfo) => {
-    console.log(record.ENname);
+    console.debug(record.ENname);
   };
 
   const dummyRecords: RecordInfo[] = [

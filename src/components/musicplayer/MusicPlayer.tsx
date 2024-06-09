@@ -31,10 +31,10 @@ export default function MusicPlayer({
   };
 
   const syncCounter = (isPlaying: boolean) => {
-    console.log("counter stopped");
+    console.debug("counter stopped");
     stopCounter();
     if (isPlaying) {
-      console.log("counter restarted");
+      console.debug("counter restarted");
       startCounter();
     }
     setAudioRecentlyToggled(true);
