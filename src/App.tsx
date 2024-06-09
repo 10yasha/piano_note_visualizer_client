@@ -69,11 +69,13 @@ function App() {
       <div className="app">
         <Navbar />
         <div className="body">
-          <MusicPlayer
-            curTime={curTime}
-            setCurTime={setCurTime}
-            setAudioRecentlyToggled={setAudioRecentlyToggled}
-          />
+          <div className="music-player-freedom">
+            <MusicPlayer
+              curTime={curTime}
+              setCurTime={setCurTime}
+              setAudioRecentlyToggled={setAudioRecentlyToggled}
+            />
+          </div>
           <div>
             Load corresponding midi file{" "}
             <input type="file" ref={midiRef} onInput={getMidiData} />

@@ -5,6 +5,7 @@
   padding: 30px 20px;
   border-radius: 10px;
   box-shadow: 0px 5px 5px black;
+  position: fixed;
 }
 
 .audio-player > h3 {

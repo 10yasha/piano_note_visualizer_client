@@ -9,11 +9,10 @@
 
 .box {
   background: url('src/assets/Melamine-wood-002.png') repeat-x 0 0 scroll;
-  border: 1px solid #999;
   border-radius: 3px;
   float: left;
-  z-index: 3;
   border-radius: 10px;
+  box-shadow: 3px 5px 5px black;
 }
 
 .cursor {

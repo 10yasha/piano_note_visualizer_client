@@ -5,3 +5,10 @@
   flex-direction: column;
   padding: 200px 0 0 0; /* for debugging with inspect */
 }
+
+.music-player-freedom {
+  z-index: 3;
+  position: absolute;
+  top: 50px;
+  right: 10px;
+}
