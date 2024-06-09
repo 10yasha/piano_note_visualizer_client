@@ -33,6 +33,10 @@ export default function YoutubePlayer({
     }
   };
 
+  // TODO, react to youtube time change even when video isn't playing!
+  // videoRef.current.getIframe
+  // https://stackoverflow.com/questions/65511523/how-to-listen-to-time-change-events-with-the-youtube-iframe-player-api/65511524#65511524
+
   useEffect(() => {
     updateCurTime();
   });
@@ -40,6 +44,7 @@ export default function YoutubePlayer({
   const onPlayerReady: YouTubeProps["onReady"] = (e) => {
     videoRef.current = e.target;
     console.debug("youtube ready");
+    updateCurTime();
   };
 
   const onPlayerStateChange: YouTubeProps["onStateChange"] = (e) => {
