@@ -52,9 +52,13 @@ export default function YoutubePlayer({
     }
   };
 
-  const onPlayerEnd: YouTubeProps["onEnd"] = (e) => {
+  const onPlayerEnd: YouTubeProps["onEnd"] = () => {
     console.debug("youtube ended");
     syncCounter(false);
+  };
+
+  const onPlayerError: YouTubeProps["onError"] = (e) => {
+    console.error("youtube error:", e);
   };
 
   const opts: YouTubeProps["opts"] = {
@@ -76,6 +80,7 @@ export default function YoutubePlayer({
         onReady={onPlayerReady}
         onStateChange={onPlayerStateChange}
         onEnd={onPlayerEnd}
+        onError={onPlayerError}
       />
     </>
   );

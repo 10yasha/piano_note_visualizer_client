@@ -1,5 +1,7 @@
 import { useState, useRef } from "react";
 
+import Draggable from "react-draggable";
+
 import AudioPlayer from "./audioplayer/AudioPlayer";
 import YoutubePlayer from "./youtubeplayer/YoutubePlayer";
 import { Player } from "../../types/GeneralTypes";
@@ -58,24 +60,35 @@ export default function MusicPlayer({
 
   return (
     <>
-      <Button onClick={swapPlayer} label="swap video/audio" />
-      <div className="player-container">
-        {player == "youtube" ? (
-          <YoutubePlayer
-            setCurTime={setCurTime}
-            syncCounter={syncCounter}
-            width={400}
-            height={225}
-          />
-        ) : (
-          <AudioPlayer
-            curTime={curTime}
-            setCurTime={setCurTime}
-            syncCounter={syncCounter}
-            stopCounter={stopCounter}
-          />
-        )}
-      </div>
+      <Draggable handle="strong">
+        <div className="box no-cursor">
+          <strong className="cursor">
+            <div>try dragging here!</div>
+          </strong>
+          <div>
+            <div>
+              <Button onClick={swapPlayer} label="swap video/audio" />
+            </div>
+            <div className="player-container">
+              {player == "youtube" ? (
+                <YoutubePlayer
+                  setCurTime={setCurTime}
+                  syncCounter={syncCounter}
+                  width={400}
+                  height={225}
+                />
+              ) : (
+                <AudioPlayer
+                  curTime={curTime}
+                  setCurTime={setCurTime}
+                  syncCounter={syncCounter}
+                  stopCounter={stopCounter}
+                />
+              )}
+            </div>
+          </div>
+        </div>
+      </Draggable>
     </>
   );
 }
