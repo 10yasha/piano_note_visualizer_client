@@ -1,0 +1,7 @@
+.youtube-player {
+  /* margin: 5px; */
+  background: url('src/assets/Melamine-wood-006.png') repeat-x 0 0 scroll;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 3px 5px 5px black;
+}

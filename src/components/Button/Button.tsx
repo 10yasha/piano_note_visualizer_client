@@ -1,7 +1,11 @@
-import React from "react";
+import "./Button.css";
 
 function Button({ onClick, label }: { onClick: () => void; label: string }) {
-  return <button onClick={onClick}>{label}</button>;
+  return (
+    <button className="btn" onClick={onClick}>
+      {label}
+    </button>
+  );
 }
 
 export default Button;
