@@ -66,7 +66,7 @@ export default function MusicPlayer({
             <div>try dragging here!</div>
           </strong>
           <div>
-            <div>
+            <div className="btn-swap">
               <Button onClick={swapPlayer} label="swap video/audio" />
             </div>
             <div className="player-container">

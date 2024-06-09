@@ -3,7 +3,8 @@
   max-height: 80px;
   padding: 0 10px;
   /* margin: 10px; */
-  background-color: #272727;
+  /* background-color: #272727; */
+  background: url('src/assets/Melamine-wood-004.png') repeat-x 0 0 scroll;
   padding: 30px 20px;
   border-radius: 10px;
   box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.479);

@@ -1,5 +1,5 @@
 .player-container{
-  width: 500px;
+  width: 420px;
   height: 240px;
   margin: 10px;
   display: flex;
@@ -8,15 +8,21 @@
 }
 
 .box {
-  background: #877a74;
+  background: url('src/assets/Melamine-wood-002.png') repeat-x 0 0 scroll;
   border: 1px solid #999;
   border-radius: 3px;
   float: left;
   z-index: 3;
-  border-radius: 100;
+  border-radius: 10px;
 }
 
 .cursor {
   text-align: center;
   cursor: move;
+  color: white
+}
+
+.btn-swap {
+  text-align: left;
+  margin-left: 20px;
 }
