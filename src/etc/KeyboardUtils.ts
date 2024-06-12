@@ -228,6 +228,7 @@ export const getWaterfallLines = (spacing: number) => {
 }
 export const a = new Array([]);
 
+// Separate midi events into black key and white key ones
 export const separateMidiEvents = (keyIsWhiteMap: Map<number, boolean>, midiEvents : SimplifiedMidi) => {
   let whiteMidiEvents : SimplifiedMidi = [];
   let blackMidiEvents : SimplifiedMidi = [];

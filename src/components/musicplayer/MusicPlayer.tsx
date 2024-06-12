@@ -22,7 +22,7 @@ export default function MusicPlayer({
 }: MusicPlayerProps) {
   const [player, setPlayer] = useState<Player>("youtube");
   const intervalRef = useRef<number | null>(null);
-  const counterIncrement = 10; // milliseconds, rate at which current notes will update
+  const counterIncrement = 10; // milliseconds, rate at which time will update
 
   const swapPlayer = () => {
     if (player == "youtube") {

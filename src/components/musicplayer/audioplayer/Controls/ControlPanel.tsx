@@ -25,7 +25,7 @@ function ControlPanel({
 
     let sec = Math.floor(duration);
 
-    // add 0's to fill in timestamp
+    // add 0's to fill in timestamp for prettiness
     let display_sec = sec.toString();
     let display_min = min.toString();
     if (sec < 10) {

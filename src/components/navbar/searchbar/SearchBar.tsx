@@ -31,7 +31,7 @@ export default function SearchBar({
     let count = 0;
     let updatedRecords = allRecords.filter((val) => {
       let normalizedName = val.ENname.toLowerCase();
-      // early exit on count = 20, necessary optimization else search too slow
+      // early exit on count = 20, optimization to prevent slow search
       if (count < 20 && normalizedName.toLowerCase().includes(search)) {
         count++;
         return true;

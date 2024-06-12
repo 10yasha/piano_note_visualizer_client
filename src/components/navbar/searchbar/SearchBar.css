@@ -41,6 +41,7 @@
 input:focus {
   outline: none;
 }
+
 .search-icon svg {
   font-size: 35px;
 }
@@ -72,6 +73,7 @@ input:focus {
 .search-item p {
   margin-left: 10px;
 }
+
 a {
   text-decoration: none;
 }

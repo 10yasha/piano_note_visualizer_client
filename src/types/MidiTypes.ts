@@ -34,8 +34,6 @@ export interface SimplifiedMidiEvent {
   pitch: number;
 }
 
-export type NotesInfo = NotesPressed[];
-
 export interface NotesPressed {
   time: number; // in seconds
   notes: number[]; // array of current notes pressed

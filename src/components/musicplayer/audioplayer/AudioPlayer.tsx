@@ -59,7 +59,7 @@ export default function AudioPlayer({
     ).toFixed(2);
     const time = e.currentTarget.currentTime;
 
-    // if curTime gets moved backwards or big adjustment made, full search to get back on track
+    // if curTime gets moved backwards or big adjustment made, full search to resync
     if (time < curTime || Math.abs(time - curTime) > 1) {
       console.debug("big time adjustment, isPlaying is", isPlaying);
       syncCounter(isPlaying);

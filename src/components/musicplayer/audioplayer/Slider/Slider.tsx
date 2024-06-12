@@ -20,14 +20,14 @@ export default function Slider({
     if (rangeRef.current && thumbRef.current) {
       const rangeWidth = rangeRef.current.getBoundingClientRect().width;
       const thumbWidth = thumbRef.current.getBoundingClientRect().width;
-      const centerThumb = (thumbWidth / 100) * percentage * -1;
-      const centerProgressBar =
+      const thumbPosition = (thumbWidth / 100) * percentage * -1;
+      const progressBarPosition =
         thumbWidth +
         (rangeWidth / 100) * percentage -
         (thumbWidth / 100) * percentage;
       setPosition(percentage);
-      setMarginLeft(centerThumb);
-      setProgressBarWidth(centerProgressBar);
+      setMarginLeft(thumbPosition);
+      setProgressBarWidth(progressBarPosition);
     }
   }, [percentage]);
 

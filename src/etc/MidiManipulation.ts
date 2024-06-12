@@ -3,9 +3,10 @@ import {
   ProcessedMidi,
   SimplifiedMidi,
   SimplifiedMidiEvent,
-  NotesInfo,
+  NotesPressed
 } from "../types/MidiTypes";
 
+// simplify midi events to just the pitch and it attack and release times
 const simplifyMidiData = (convertedMidiData : ProcessedMidi) : SimplifiedMidi => {
   let simplifiedMidiData : SimplifiedMidi = [];
 
@@ -13,9 +14,9 @@ const simplifyMidiData = (convertedMidiData : ProcessedMidi) : SimplifiedMidi =>
 
   convertedMidiData.forEach((newEvent) => {
     if (newEvent.press){
-      // this is attack event, add new event to ActiveEvents
+      // this is attack event, add it to ActiveEvents
       ActiveEvents.push({attack: newEvent.time,
-      release: -1, // -1 => not filled in yet
+      release: -1, // tbd
       pitch: newEvent.pitch})
     } else {
       // this is release event, find the event in ActiveEvents that it corresponds to
@@ -25,7 +26,11 @@ const simplifyMidiData = (convertedMidiData : ProcessedMidi) : SimplifiedMidi =>
       }
 
       // update release time
-      ActiveEvents[index].release = newEvent.time;
+      if (ActiveEvents[index].release == -1){
+        ActiveEvents[index].release = newEvent.time;
+      } else {
+        console.error("Something is wrong with event index:", index, ActiveEvents[index])
+      }
 
       // move it from ActiveEvents to simplifiedMidiData
       simplifiedMidiData.push(ActiveEvents[index]);
@@ -36,7 +41,8 @@ const simplifyMidiData = (convertedMidiData : ProcessedMidi) : SimplifiedMidi =>
   return simplifiedMidiData.sort((eventA, eventB) => { return eventA.attack - eventB.attack });
 }
 
-export const processMidiData = (data: RawMidi) : [SimplifiedMidi, NotesInfo] => {
+// convert the raw midi to be usable
+export const processMidiData = (data: RawMidi) : [SimplifiedMidi, NotesPressed[]] => {
   let rawMidiData = data.track.slice(-1)[0].event;
   /* last item is empty so pop it (ex.
     { "deltaTime": 1, "type": 255, "metaType": 47})*/
@@ -47,7 +53,7 @@ export const processMidiData = (data: RawMidi) : [SimplifiedMidi, NotesInfo] => 
 
   let curTime = 0;
   let convertedMidiData: ProcessedMidi = [];
-  let convertedNoteData: NotesInfo = [];
+  let convertedNoteData: NotesPressed[] = [];
   let currentNotes: number[] = []; // store current notes being pressed
 
   rawMidiData.forEach((data) => {
@@ -85,8 +91,8 @@ export const processMidiData = (data: RawMidi) : [SimplifiedMidi, NotesInfo] => 
   return [simplifyMidiData(convertedMidiData), convertedNoteData];
 };
 
-
-const timeMatches = (noteData: NotesInfo, curTime: number, index: number) => {
+// given index into array of notesPressed, find if the curTime is between indexed event and immediate next event
+const timeMatches = (noteData: NotesPressed[], curTime: number, index: number) => {
   if (index >= noteData.length-1) {
     return true;
   }
@@ -98,9 +104,8 @@ const timeMatches = (noteData: NotesInfo, curTime: number, index: number) => {
   }
 };
 
-
 // binary search through everything
-export const fullSearchForIndex = (curTime: number, noteData: NotesInfo) => {
+export const fullSearchForIndex = (curTime: number, noteData: NotesPressed[]) => {
   let start = 0;
   let end = noteData.length - 1;
 
@@ -120,8 +125,8 @@ export const fullSearchForIndex = (curTime: number, noteData: NotesInfo) => {
   return -1;
 };
 
-// only search indices immediately above curIndex since time proceeds forwards xD
-export const quickSearchForIndex = (curTime: number, curIndex: number, noteData: NotesInfo) => {
+// only search indices immediately above curIndex since time is nondecreasing duuhh
+export const quickSearchForIndex = (curTime: number, curIndex: number, noteData: NotesPressed[]) => {
   let newIndex = curIndex;
   while (
     newIndex < noteData.length - 1 &&
@@ -154,7 +159,7 @@ export const updateWindow = (
   return [windStart, windEnd];
 };
 
-// subrtract curTime from note onset and offset times
+// subrtract curTime from note attack and release times
 export const normalizeMidiEvents = (curTime: number, midiData: SimplifiedMidi) => {
   let normalizedEvents : SimplifiedMidi = [];
   midiData.forEach((event) => {

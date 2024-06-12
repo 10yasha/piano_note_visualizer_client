@@ -3,8 +3,6 @@ import { useEffect, useRef } from "react";
 import { SimplifiedMidi } from "../../../types/MidiTypes";
 import { NoteDrawingSpecs } from "../../../types/GeneralTypes";
 
-// import useCanvas from "./useCanvas";
-
 interface CanvasProps {
   draw: (
     context: CanvasRenderingContext2D,

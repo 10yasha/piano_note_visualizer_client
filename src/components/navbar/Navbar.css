@@ -12,11 +12,11 @@
 }
 
 .navbar-left {
-  flex: 1;
+  flex: 2;
 }
 
 .navbar-middle {
-  flex: 3;
+  flex: 2;
 }
 
 .navbar-right {

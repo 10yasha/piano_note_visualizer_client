@@ -6,7 +6,7 @@ import {
   fullSearchForIndex,
   quickSearchForIndex,
 } from "./etc/MidiManipulation";
-import { RawMidi, SimplifiedMidi, NotesInfo } from "./types/MidiTypes";
+import { RawMidi, SimplifiedMidi, NotesPressed } from "./types/MidiTypes";
 import "./App.css";
 
 import Navbar from "./components/navbar/Navbar";
@@ -19,7 +19,7 @@ function App() {
   const [curTime, setCurTime] = useState<number>(0);
 
   const [midiData, setMidiData] = useState<SimplifiedMidi>([]);
-  const [noteData, setNoteData] = useState<NotesInfo>([]);
+  const [noteData, setNoteData] = useState<NotesPressed[]>([]);
   const [curNotes, setCurNotes] = useState<number[]>([]); // by midi number
   const [audioRecentlyToggled, setAudioRecentlyToggled] =
     useState<boolean>(true);
