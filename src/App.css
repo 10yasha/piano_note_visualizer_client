@@ -1,4 +1,4 @@
-.body {
+.main {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -6,7 +6,7 @@
   padding: 200px 0 0 0; /* for debugging with inspect */
 }
 
-.music-player-freedom {
+.music-player-undocked {
   z-index: 3;
   position: absolute;
   top: 50px;

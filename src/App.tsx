@@ -5,7 +5,7 @@ import {
   processMidiData,
   fullSearchForIndex,
   quickSearchForIndex,
-} from "./etc/MidiManipulation";
+} from "./etc/MidiProcessing";
 import { RawMidi, SimplifiedMidi, NotesPressed } from "./types/MidiTypes";
 import "./App.css";
 
@@ -67,9 +67,11 @@ function App() {
   return (
     <>
       <div className="app">
-        <Navbar />
-        <div className="body">
-          <div className="music-player-freedom">
+        <div className="header">
+          <Navbar />
+        </div>
+        <div className="main">
+          <div className="music-player-undocked">
             <MusicPlayer
               curTime={curTime}
               setCurTime={setCurTime}

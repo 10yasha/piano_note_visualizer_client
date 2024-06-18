@@ -6,7 +6,7 @@ import {
   getWaterfallLines,
   separateMidiEvents,
 } from "../../etc/KeyboardUtils";
-import { updateWindow, normalizeMidiEvents } from "../../etc/MidiManipulation";
+import { updateWindow, normalizeMidiEvents } from "../../etc/MidiProcessing";
 import { SimplifiedMidi } from "../../types/MidiTypes";
 import { NoteDrawingSpecs } from "../../types/GeneralTypes";
 
