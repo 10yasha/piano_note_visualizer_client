@@ -8,7 +8,7 @@
 }
 
 .box {
-  background: url('src/assets/Melamine-wood-002.png') repeat-x 0 0 scroll;
+  background: url('/src/assets/Melamine-wood-002.png') repeat-x 0 0 scroll;
   border-radius: 3px;
   float: left;
   border-radius: 10px;

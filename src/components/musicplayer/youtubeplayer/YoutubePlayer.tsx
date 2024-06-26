@@ -13,6 +13,7 @@ enum YTState {
 }
 
 interface YoutubePlayerProps {
+  youtubeUrl: string;
   setCurTime: React.Dispatch<React.SetStateAction<number>>;
   syncCounter: (isPlaying: boolean) => void;
   width: number;
@@ -20,6 +21,7 @@ interface YoutubePlayerProps {
 }
 
 export default function YoutubePlayer({
+  youtubeUrl,
   setCurTime,
   syncCounter,
   width,
@@ -39,6 +41,7 @@ export default function YoutubePlayer({
 
   useEffect(() => {
     updateCurTime();
+    console.log("youtubeUrl", youtubeUrl);
   });
 
   const onPlayerReady: YouTubeProps["onReady"] = (e) => {
@@ -79,7 +82,8 @@ export default function YoutubePlayer({
     <>
       <div className="youtube-player">
         <YouTube
-          videoId="faP8gKBuErg" // saber's edge
+          videoId={youtubeUrl}
+          // videoId="faP8gKBuErg" // saber's edge
           // videoId="_HZRiwDz-9M" // color your night
           // videoId="tW9Alr38Ha0" // test vid so I'm not adding too many views to my own vids
           opts={opts}

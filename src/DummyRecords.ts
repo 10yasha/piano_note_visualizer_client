@@ -3,7 +3,7 @@ import { RecordInfo } from "./types/GeneralTypes";
 export const dummyRecords: RecordInfo[] = [
 	{
 		uuid: "a",
-		uri: "faP8gKBuErg",
+		url: "faP8gKBuErg",
 		name: "FFXIII – Saber’s Edge【ブレイズエッジ】",
 		ENname: "FFXIII - Saber's Edge",
 		JPname: "FFXIII – ブレイズエッジ",
@@ -14,7 +14,7 @@ export const dummyRecords: RecordInfo[] = [
 	},
 	{
 		uuid: "b",
-		uri: "QJYx7d9v1fg",
+		url: "_HZRiwDz-9M",
 		name: "Persona 3 Reload【ペルソナ3 リロード】– Color Your Night",
 		ENname: "Persona 3 - Color Your Night",
 		JPname: "ペルソナ3 リロード – Color Your Night",

@@ -13,12 +13,14 @@ interface MusicPlayerProps {
   curTime: number;
   setCurTime: React.Dispatch<React.SetStateAction<number>>;
   setAudioRecentlyToggled: React.Dispatch<React.SetStateAction<boolean>>;
+  youtubeUrl: string;
 }
 
 export default function MusicPlayer({
   curTime,
   setCurTime,
   setAudioRecentlyToggled,
+  youtubeUrl,
 }: MusicPlayerProps) {
   const [player, setPlayer] = useState<Player>("youtube");
   const intervalRef = useRef<number | null>(null);
@@ -72,6 +74,7 @@ export default function MusicPlayer({
             <div className="player-container">
               {player == "youtube" ? (
                 <YoutubePlayer
+                  youtubeUrl={youtubeUrl}
                   setCurTime={setCurTime}
                   syncCounter={syncCounter}
                   width={400}

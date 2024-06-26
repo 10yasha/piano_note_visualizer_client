@@ -7,7 +7,7 @@
 }
 
 .music-player-undocked {
-  z-index: 3;
+  z-index: 2;
   position: absolute;
   top: 50px;
   right: 10px;

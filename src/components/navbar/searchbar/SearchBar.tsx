@@ -76,10 +76,11 @@ export default function SearchBar({
         <div className="search-result">
           {filteredRecords.map((val) => {
             return (
+              // TODO replace this with react link element later
               <a
-                key={val.id}
+                key={val.uuid}
                 className="search-item"
-                href="#"
+                href={`/browse/${val.url}`}
                 onClick={() => {
                   handleClick(val);
                 }}

@@ -1,3 +1,7 @@
+/* * {
+  box-sizing: border-box; not sure if good idea
+} */
+
 body {
   background: #e5d8ce;
   height: 80vh;
@@ -5,4 +9,5 @@ body {
   justify-content: center;
   align-items: center;
   font-family: sans-serif;
+  margin: 0;
 }
