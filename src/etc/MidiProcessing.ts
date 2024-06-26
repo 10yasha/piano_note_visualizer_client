@@ -6,7 +6,7 @@ import {
   NotesPressed
 } from "../types/MidiTypes";
 
-// simplify midi events to just the pitch and it attack and release times
+// simplify midi events to just the pitch and its attack and release times
 const simplifyMidiData = (convertedMidiData : ProcessedMidi) : SimplifiedMidi => {
   let simplifiedMidiData : SimplifiedMidi = [];
 
@@ -159,7 +159,7 @@ export const updateWindow = (
   return [windStart, windEnd];
 };
 
-// subrtract curTime from note attack and release times
+// subtract curTime from note attack and release times
 export const normalizeMidiEvents = (curTime: number, midiData: SimplifiedMidi) => {
   let normalizedEvents : SimplifiedMidi = [];
   midiData.forEach((event) => {

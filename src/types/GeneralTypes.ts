@@ -1,12 +1,15 @@
 export type Player = "youtube" | "audio";
 
 export interface RecordInfo {
-  id: string;
-  ENname: string; // full name in English
-  JPfname: string; // full name in Japanese (potentially kanji)
-  JPhname: string; // hiragana name in Japanese
+  uuid: string;
+  uri: string;
+  name: string;
+  ENname: string; // English
+  JPname: string; // Japanese (potentially kanji)
+  JPhiragananame: string; // Japanese (in hiragana, empty if JPname fine as is)
   type: "vgm" | "op/ed" | "jazz" | "classical" | "free" | "original";
-  tags: string[];
+  tag: string;
+  addtags: string[];
 }
 
 // for drawing
