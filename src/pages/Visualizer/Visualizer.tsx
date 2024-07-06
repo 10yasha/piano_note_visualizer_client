@@ -10,13 +10,13 @@ import {
 import { RawMidi, SimplifiedMidi, NotesPressed } from "../../types/MidiTypes";
 import "./Visualizer.css";
 
-import Navbar from "../../components/navbar/Navbar";
 import MusicPlayer from "../../components/musicplayer/MusicPlayer";
 import ActiveNotesDisplay from "../../components/activenotesdisplay/ActiveNotesDisplay";
 import Waterfall from "../../components/waterfall/Waterfall";
 import Keyboard from "../../components/keyboard/Keyboard";
 
 function Visualizer() {
+  // grab recordurl from last string in https://website/browse/faP8gKBuErg
   const params = useParams<{ recordurl: string }>();
 
   const [curTime, setCurTime] = useState<number>(0);
@@ -70,9 +70,6 @@ function Visualizer() {
   return (
     <>
       <div className="app">
-        <div className="header">
-          <Navbar />
-        </div>
         <div className="main">
           <div className="music-player-undocked">
             <MusicPlayer

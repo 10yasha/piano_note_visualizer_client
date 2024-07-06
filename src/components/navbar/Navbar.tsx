@@ -1,14 +1,67 @@
-import SearchBar from "./searchbar/SearchBar";
-import { RecordInfo } from "../../types/GeneralTypes";
+import { createBrowserRouter, Link } from "react-router-dom";
+
+import SearchBar from "../searchbar/SearchBar";
+import { RecordingInfo } from "../../types/GeneralTypes";
 import { dummyRecords } from "../../DummyRecords";
 
-import { Link } from "react-router-dom";
+import HomePage from "../../pages/Home/HomePage.tsx";
+import BrowsePage from "../../pages/Browse/BrowsePage.tsx";
+import AboutPage from "../../pages/About/AboutPage.tsx";
+import ManagePage from "../../pages/Manage/ManagePage.tsx";
+import LoginPage from "../../pages/Login/LoginPage.tsx";
+import NotFoundPage from "../../pages/NotFound/NotFoundPage.tsx";
+import Visualizer from "../../pages/Visualizer/Visualizer.tsx";
 
 import "./Navbar.css";
 
+import { Outlet } from "react-router-dom";
+
+function NavbarWrapper() {
+  return (
+    <div>
+      <Navbar />
+      <Outlet />
+    </div>
+  );
+}
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <NavbarWrapper />,
+    children: [
+      {
+        path: "/",
+        element: <HomePage />,
+        errorElement: <NotFoundPage />,
+      },
+      {
+        path: "/browse",
+        element: <BrowsePage />,
+      },
+      {
+        path: "/browse/:recordurl",
+        element: <Visualizer />,
+      },
+      {
+        path: "/about",
+        element: <AboutPage />,
+      },
+      {
+        path: "/manage",
+        element: <ManagePage />,
+      },
+      {
+        path: "/login",
+        element: <LoginPage />,
+      },
+    ],
+  },
+]);
+
 function Navbar() {
-  const handleSearch = (record: RecordInfo) => {
-    console.debug(record.ENname);
+  const handleSearch = (recording: RecordingInfo) => {
+    console.debug(recording.ENname);
   };
 
   return (
@@ -36,7 +89,10 @@ function Navbar() {
       <div className="navbar-right">
         <ul className="navbar-links-right">
           <li>
-            <Link to="/admin">Admin</Link>
+            <Link to="/manage">Manage</Link>
+          </li>
+          <li>
+            <Link to="/login">Login</Link>
           </li>
         </ul>
       </div>
@@ -44,4 +100,4 @@ function Navbar() {
   );
 }
 
-export default Navbar;
+export default router;

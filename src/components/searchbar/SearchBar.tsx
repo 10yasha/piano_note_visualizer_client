@@ -4,7 +4,7 @@ import "./SearchBar.css";
 import AlbumIcon from "@mui/icons-material/Album";
 import CloseIcon from "@mui/icons-material/Close";
 
-import { RecordInfo } from "../../../types/GeneralTypes";
+import { RecordInfo } from "../../types/GeneralTypes";
 
 interface SearchBarProps {
   placeholder: string;
