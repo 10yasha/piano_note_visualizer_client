@@ -41,7 +41,6 @@ export default function YoutubePlayer({
 
   useEffect(() => {
     updateCurTime();
-    console.log("youtubeUrl", youtubeUrl);
   });
 
   const onPlayerReady: YouTubeProps["onReady"] = (e) => {
