@@ -1,8 +1,8 @@
 import { createBrowserRouter, Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 import SearchBar from "../searchbar/SearchBar";
 import { RecordingInfo } from "../../types/GeneralTypes";
-import { dummyRecords } from "../../DummyRecords";
 
 import HomePage from "../../pages/Home/HomePage.tsx";
 import BrowsePage from "../../pages/Browse/BrowsePage.tsx";
@@ -12,9 +12,13 @@ import LoginPage from "../../pages/Login/LoginPage.tsx";
 import NotFoundPage from "../../pages/NotFound/NotFoundPage.tsx";
 import Visualizer from "../../pages/Visualizer/Visualizer.tsx";
 
+import { useAllRecordings } from "../../hooks/useAllRecordings";
+
 import "./Navbar.css";
 
 import { Outlet } from "react-router-dom";
+import { AxiosError } from "axios";
+import api from "../../api/api.ts";
 
 function NavbarWrapper() {
   return (
@@ -60,8 +64,10 @@ const router = createBrowserRouter([
 ]);
 
 function Navbar() {
+  const records = useAllRecordings();
+
   const handleSearch = (recording: RecordingInfo) => {
-    console.debug(recording.ENname);
+    console.debug(recording.enName);
   };
 
   return (
@@ -82,7 +88,7 @@ function Navbar() {
       <div className="navbar-middle">
         <SearchBar
           placeholder="search..."
-          allRecords={dummyRecords}
+          allRecords={records}
           callback={handleSearch}
         />
       </div>

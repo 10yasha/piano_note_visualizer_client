@@ -4,12 +4,12 @@ import "./SearchBar.css";
 import AlbumIcon from "@mui/icons-material/Album";
 import CloseIcon from "@mui/icons-material/Close";
 
-import { RecordInfo } from "../../types/GeneralTypes";
+import { RecordingInfo } from "../../types/GeneralTypes";
 
 interface SearchBarProps {
   placeholder: string;
-  allRecords: RecordInfo[];
-  callback: (data: RecordInfo) => void;
+  allRecords: RecordingInfo[];
+  callback: (data: RecordingInfo) => void;
 }
 
 export default function SearchBar({
@@ -17,7 +17,7 @@ export default function SearchBar({
   allRecords,
   callback,
 }: SearchBarProps) {
-  const [filteredRecords, setFilteredRecords] = useState<RecordInfo[]>([]);
+  const [filteredRecords, setFilteredRecords] = useState<RecordingInfo[]>([]);
   const [searchEntered, setSearchEntered] = useState<string>("");
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,7 +30,7 @@ export default function SearchBar({
 
     let count = 0;
     let updatedRecords = allRecords.filter((val) => {
-      let normalizedName = val.ENname.toLowerCase();
+      let normalizedName = val.enName.toLowerCase();
       // early exit on count = 20, optimization to prevent slow search
       if (count < 20 && normalizedName.toLowerCase().includes(search)) {
         count++;
@@ -47,7 +47,7 @@ export default function SearchBar({
     setSearchEntered("");
   };
 
-  const handleClick = (data: RecordInfo) => {
+  const handleClick = (data: RecordingInfo) => {
     callback(data);
     clearInput();
   };
@@ -78,14 +78,14 @@ export default function SearchBar({
             return (
               // TODO replace this with react link element later
               <a
-                key={val.uuid}
+                key={val.id}
                 className="search-item"
                 href={`/browse/${val.url}`}
                 onClick={() => {
                   handleClick(val);
                 }}
               >
-                <p>{val.ENname}</p>
+                <p>{val.enName}</p>
               </a>
             );
           })}
