@@ -1,3 +1,5 @@
+import { addRecording } from "./ManageApiHelper";
+
 export default function ManagePage() {
   return (
     <div className="manage-page">

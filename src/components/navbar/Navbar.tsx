@@ -1,5 +1,5 @@
 import { createBrowserRouter, Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { Outlet } from "react-router-dom";
 
 import SearchBar from "../searchbar/SearchBar";
 import { RecordingInfo } from "../../types/GeneralTypes";
@@ -15,10 +15,6 @@ import Visualizer from "../../pages/Visualizer/Visualizer.tsx";
 import { useAllRecordings } from "../../hooks/useAllRecordings";
 
 import "./Navbar.css";
-
-import { Outlet } from "react-router-dom";
-import { AxiosError } from "axios";
-import api from "../../api/api.ts";
 
 function NavbarWrapper() {
   return (
