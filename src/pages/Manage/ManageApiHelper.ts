@@ -1,5 +1,3 @@
-import axios from "axios";
-
 import api, { handleErrorWrapper } from "../../api/api";
 
 import { RecordingInfo, extraTag } from "../../types/GeneralTypes";
@@ -14,20 +12,20 @@ export const addRecording = async (newRecording: RecordingInfo) => {
     enName: newRecording.enName,
     jpName: newRecording.jpName,
     jpHiraganaName: newRecording.jpHiraganaName,
-    type: newRecording,
+    type: newRecording.type,
     mainTag: newRecording.mainTag,
   };
 
   handleErrorWrapper(async () => {
-    const res = await axios.post(api + "/recording", mainInfo);
+    console.log("here")
+    const res = await api.post("recording", mainInfo);
     recordingId = res.data.id;
   })
 
   // add extra tags
   newRecording.extraTags.forEach(async (extraTag) => {
       handleErrorWrapper(async () => {
-      const res = await axios.post(
-        api + `/extra-tag/${recordingId}`,
+      const res = await api.post(`extra-tag/${recordingId}`,
         {
           tag: extraTag.tag,
         }
@@ -48,7 +46,7 @@ export const updateMainRecordingInfo = async (updatedRecording: RecordingInfo) =
   };
 
   handleErrorWrapper(async () => {
-    const res = await axios.post(api + `/recording/${updatedRecording.id}`, mainInfo);
+    const res = await api.post(`recording/${updatedRecording.id}`, mainInfo);
   });
 }
 
@@ -57,8 +55,8 @@ export const updateExtraTags = async (prevTags: extraTag[], curTags: extraTag[])
   curTags.forEach(async (curTag) => {
     if (!prevTags.find((prevTag) => prevTag.tag === curTag.tag)) {
       handleErrorWrapper(async () => {
-        const res = await axios.post(
-          api + `/extra-tag/${curTag.recordingId}`,
+        const res = await api.post(
+          `/extra-tag/${curTag.recordingId}`,
           {
             tag: curTag.tag,
           }
@@ -71,7 +69,7 @@ export const updateExtraTags = async (prevTags: extraTag[], curTags: extraTag[])
   prevTags.forEach(async (prevTag) => {
     if (!curTags.find((curTag) => curTag.tag === prevTag.tag)) {
       handleErrorWrapper(async () => {
-        const res = await axios.delete(api + `/extra-tag/${prevTag.id}`);
+        const res = await api.delete(`/extra-tag/${prevTag.id}`);
       });
     }
   });
@@ -79,13 +77,13 @@ export const updateExtraTags = async (prevTags: extraTag[], curTags: extraTag[])
 
 export const deleteRecording = async (recordingToRemove: RecordingInfo) => {
   handleErrorWrapper(async () => {
-    const res = await axios.delete(api + `/recording/${recordingToRemove.id}`);
+    const res = await api.delete(`/recording/${recordingToRemove.id}`);
   })
 
   // add extra tags
   recordingToRemove.extraTags.forEach(async (extraTag) => {
       handleErrorWrapper(async () => {
-      const res = await axios.delete(api + `/extra-tag/${extraTag.id}`);
+      const res = await api.delete(`/extra-tag/${extraTag.id}`);
     });
   });
 };

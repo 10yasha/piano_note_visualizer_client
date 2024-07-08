@@ -1,0 +1,36 @@
+.tag-input {
+  display: flex;
+  flex-wrap: wrap;
+  border: 1px solid #ccc;
+  padding: 5px;
+  border-radius: 5px;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.tag {
+  background-color: #e0e0e0;
+  border-radius: 3px;
+  padding: 5px;
+  margin: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.tag button {
+  background: none;
+  border: none;
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+.tag button:focus {
+  outline: none;
+}
+
+input[type='text'] {
+  border: none;
+  outline: none;
+  flex: 1;
+  min-width: 100px;
+}

@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import axios, { AxiosError } from 'axios';
-import { RecordingInfo } from '../types/GeneralTypes';
+import { useState, useEffect } from "react";
+import { AxiosError } from "axios";
+import { RecordingInfo } from "../types/GeneralTypes";
 import api from "../api/api";
 
 export const useAllRecordings = () => {

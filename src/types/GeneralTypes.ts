@@ -2,16 +2,32 @@ export type Player = "youtube" | "audio";
 
 export type extraTag = {id: number, recordingId: number, tag: string};
 
+export const recordingTypes = ["vgm", "op/ed", "jazz", "classical", "freestyle", "original"] as const;
+
 export interface RecordingInfo {
-  id: string;
+  id: number;
   url: string;
   name: string;
   enName: string; // English
   jpName: string; // Japanese (potentially kanji, empty if japanese not applicable)
   jpHiraganaName: string; // Japanese (in hiragana, empty if JPname already in hiragana)
-  type: "vgm" | "op/ed" | "jazz" | "classical" | "free" | "original";
+  type: typeof recordingTypes[number];
   mainTag: string;
   extraTags: extraTag[];
+}
+
+export function recordingDefaultFactory(): RecordingInfo {
+  return {
+    id: -1,
+    url: "",
+    name: "",
+    enName: "",
+    jpName: "",
+    jpHiraganaName: "",
+    type: "vgm",
+    mainTag: "",
+    extraTags: []
+  }
 }
 
 // for drawing
