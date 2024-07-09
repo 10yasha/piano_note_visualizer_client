@@ -1,10 +1,9 @@
 import api, { handleErrorWrapper } from "../../api/api";
 
-import { RecordingInfo, extraTag } from "../../types/GeneralTypes";
+import { RecordingInfo, ExtraTag } from "../../types/GeneralTypes";
 
 export const addRecording = async (newRecording: RecordingInfo) => {
-  var recordingId : number;
-
+  var recordingId: number;
   // add main info
   const mainInfo = {
     url: newRecording.url,
@@ -16,32 +15,23 @@ export const addRecording = async (newRecording: RecordingInfo) => {
     mainTag: newRecording.mainTag,
   };
 
-  // handleErrorWrapper(async () => {
-  //   const res = await api.post("recording", mainInfo);
-  //   console.log("created id", res.data.id);
-  //   recordingId = res.data.id;
-  // })
-
-  api.post("recording", mainInfo).then((res) => {
-    console.log("created id", res.data.id);
+  await handleErrorWrapper(async () => {
+    const res = await api.post("recording", mainInfo);
+    console.log("added recording:", res.data)
     recordingId = res.data.id;
+  });
 
     // add extra tags
-    newRecording.extraTags.forEach(async (extraTag) => {
-      handleErrorWrapper(async () => {
-        const res = await api.post(`extra-tag/${recordingId}`,
-          {
-            tag: extraTag.tag,
-          }
-        );
-      });
+  newRecording.extraTags.forEach(async (extraTag) => {
+    await handleErrorWrapper(async () => {
+      const res = await api.post(`extra-tag/${recordingId}`,
+        {
+          tag: extraTag.tag,
+        }
+      );
+      console.log("added tag:", res.data)
     });
-  }).catch((err) => {
-    console.error(err);
-  })
-
-
-  
+  });
 };
 
 export const updateMainRecordingInfo = async (updatedRecording: RecordingInfo) => {
@@ -55,16 +45,16 @@ export const updateMainRecordingInfo = async (updatedRecording: RecordingInfo) =
     mainTag: updatedRecording.mainTag,
   };
 
-  handleErrorWrapper(async () => {
+  await handleErrorWrapper(async () => {
     const res = await api.post(`recording/${updatedRecording.id}`, mainInfo);
   });
 }
 
-export const updateExtraTags = async (prevTags: extraTag[], curTags: extraTag[]) => {
+export const updateExtraTags = async (prevTags: ExtraTag[], curTags: ExtraTag[]) => {
   // add new tags
   curTags.forEach(async (curTag) => {
     if (!prevTags.find((prevTag) => prevTag.tag === curTag.tag)) {
-      handleErrorWrapper(async () => {
+      await handleErrorWrapper(async () => {
         const res = await api.post(
           `/extra-tag/${curTag.recordingId}`,
           {
@@ -78,7 +68,7 @@ export const updateExtraTags = async (prevTags: extraTag[], curTags: extraTag[])
   // delete removed tags
   prevTags.forEach(async (prevTag) => {
     if (!curTags.find((curTag) => curTag.tag === prevTag.tag)) {
-      handleErrorWrapper(async () => {
+      await handleErrorWrapper(async () => {
         const res = await api.delete(`/extra-tag/${prevTag.id}`);
       });
     }
@@ -86,14 +76,16 @@ export const updateExtraTags = async (prevTags: extraTag[], curTags: extraTag[])
 }
 
 export const deleteRecording = async (recordingToRemove: RecordingInfo) => {
-  handleErrorWrapper(async () => {
-    const res = await api.delete(`/recording/${recordingToRemove.id}`);
-  })
-
-  // add extra tags
+  // remove extra tags first due to foreign key constraint
   recordingToRemove.extraTags.forEach(async (extraTag) => {
-      handleErrorWrapper(async () => {
+    await handleErrorWrapper(async () => {
+      console.log("deleting tag:", extraTag.id, extraTag.tag);
       const res = await api.delete(`/extra-tag/${extraTag.id}`);
     });
   });
+
+  await handleErrorWrapper(async () => {
+    console.log("deleting recording:", recordingToRemove.id, recordingToRemove.name);
+    const res = await api.delete(`/recording/${recordingToRemove.id}`);
+  })
 };

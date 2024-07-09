@@ -1,6 +1,6 @@
 export type Player = "youtube" | "audio";
 
-export type extraTag = {id: number, recordingId: number, tag: string};
+export type ExtraTag = {id: number, recordingId: number, tag: string};
 
 export const recordingTypes = ["vgm", "op/ed", "jazz", "classical", "freestyle", "original"] as const;
 
@@ -13,7 +13,7 @@ export interface RecordingInfo {
   jpHiraganaName: string; // Japanese (in hiragana, empty if JPname already in hiragana)
   type: typeof recordingTypes[number];
   mainTag: string;
-  extraTags: extraTag[];
+  extraTags: ExtraTag[];
 }
 
 export function recordingDefaultFactory(): RecordingInfo {

@@ -1,14 +1,14 @@
 import { useState } from "react";
 import "./EditTags.css";
 
-import { extraTag } from "../../../types/GeneralTypes";
+import { ExtraTag } from "../../../types/GeneralTypes";
 
 export default function EditTags({
   tags,
   setTags,
 }: {
-  tags: extraTag[];
-  setTags: (tags: extraTag[]) => void;
+  tags: ExtraTag[];
+  setTags: (tags: ExtraTag[]) => void;
 }) {
   const [newTag, setNewTag] = useState<string>("");
 

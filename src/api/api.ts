@@ -4,9 +4,9 @@ export default axios.create({
   baseURL: 'http://localhost:5128/api',
 });
 
-export const handleErrorWrapper = (apiCall: () => void) => {
+export const handleErrorWrapper = async (apiCall: () => Promise<void>) => {
   try {
-    apiCall();
+    await apiCall();
   } catch (e: unknown) {
     const err = e as AxiosError;
     if (err.response) {
