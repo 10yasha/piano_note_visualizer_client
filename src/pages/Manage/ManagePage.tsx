@@ -21,7 +21,7 @@ import {
 import "./ManagePage.css";
 
 export default function ManagePage() {
-  const records = useAllRecordings();
+  const { records, fetchRecordings } = useAllRecordings();
 
   const [formData, setFormData] = useState<RecordingInfo>(
     recordingDefaultFactory()
@@ -34,7 +34,11 @@ export default function ManagePage() {
     });
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -42,31 +46,33 @@ export default function ManagePage() {
     });
   };
 
-  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value.split(","),
-    });
-  };
-
+  // prevent pressing enter from submitting form
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form data:", formData);
-    addRecording(formData);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+    }
+  };
+
+  const handleCreate = async () => {
+    await addRecording(formData);
+    fetchRecordings();
   };
 
   return (
     <div className="manage-page">
       <div className="create-recording">
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} onKeyDown={handleKeyDown}>
           <div>
             <label>Url:</label>
             <input
               type="text"
               name="url"
               value={formData.url}
-              onChange={handleInputChange}
+              onChange={handleChange}
             />
           </div>
           <div>
@@ -75,7 +81,7 @@ export default function ManagePage() {
               type="text"
               name="name"
               value={formData.name}
-              onChange={handleInputChange}
+              onChange={handleChange}
             />
           </div>
           <div>
@@ -84,7 +90,7 @@ export default function ManagePage() {
               type="text"
               name="enName"
               value={formData.enName}
-              onChange={handleInputChange}
+              onChange={handleChange}
             />
           </div>
           <div>
@@ -93,7 +99,7 @@ export default function ManagePage() {
               type="text"
               name="jpName"
               value={formData.jpName}
-              onChange={handleInputChange}
+              onChange={handleChange}
             />
           </div>
           <div>
@@ -102,16 +108,12 @@ export default function ManagePage() {
               type="text"
               name="jpHiraganaName"
               value={formData.jpHiraganaName}
-              onChange={handleInputChange}
+              onChange={handleChange}
             />
           </div>
           <div>
             <label>Type:</label>
-            <select
-              name="type"
-              value={formData.type}
-              onChange={handleSelectChange}
-            >
+            <select name="type" value={formData.type} onChange={handleChange}>
               {recordingTypes.map((type) => (
                 <option key={type} value={type}>
                   {type}
@@ -125,11 +127,13 @@ export default function ManagePage() {
               type="text"
               name="mainTag"
               value={formData.mainTag}
-              onChange={handleInputChange}
+              onChange={handleChange}
             />
           </div>
           <EditTags tags={formData.extraTags} setTags={setTags} />
-          <button type="submit">Create</button>
+          <button type="submit" onClick={handleCreate}>
+            Create
+          </button>
         </form>
       </div>
       <div className="edit-recordings">

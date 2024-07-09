@@ -48,10 +48,6 @@
   padding: 0 1rem;
 }
 
-/* .navbar li.active {
-  background-color: #3d291b;
-}
-
 .navbar li:hover {
-  background-color: #aaa;
-} */
+  background-color: inherit;
+}

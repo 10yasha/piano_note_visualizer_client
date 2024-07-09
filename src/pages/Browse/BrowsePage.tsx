@@ -4,7 +4,7 @@ import { useAllRecordings } from "../../hooks/useAllRecordings";
 import "./BrowsePage.css";
 
 export default function BrowsePage() {
-  const records = useAllRecordings();
+  const { records } = useAllRecordings();
 
   return (
     <div className="browse-page">

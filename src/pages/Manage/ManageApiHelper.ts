@@ -16,22 +16,32 @@ export const addRecording = async (newRecording: RecordingInfo) => {
     mainTag: newRecording.mainTag,
   };
 
-  handleErrorWrapper(async () => {
-    console.log("here")
-    const res = await api.post("recording", mainInfo);
+  // handleErrorWrapper(async () => {
+  //   const res = await api.post("recording", mainInfo);
+  //   console.log("created id", res.data.id);
+  //   recordingId = res.data.id;
+  // })
+
+  api.post("recording", mainInfo).then((res) => {
+    console.log("created id", res.data.id);
     recordingId = res.data.id;
+
+    // add extra tags
+    newRecording.extraTags.forEach(async (extraTag) => {
+      handleErrorWrapper(async () => {
+        const res = await api.post(`extra-tag/${recordingId}`,
+          {
+            tag: extraTag.tag,
+          }
+        );
+      });
+    });
+  }).catch((err) => {
+    console.error(err);
   })
 
-  // add extra tags
-  newRecording.extraTags.forEach(async (extraTag) => {
-      handleErrorWrapper(async () => {
-      const res = await api.post(`extra-tag/${recordingId}`,
-        {
-          tag: extraTag.tag,
-        }
-      );
-    });
-  });
+
+  
 };
 
 export const updateMainRecordingInfo = async (updatedRecording: RecordingInfo) => {

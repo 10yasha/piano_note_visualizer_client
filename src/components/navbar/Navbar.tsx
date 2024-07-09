@@ -60,7 +60,7 @@ const router = createBrowserRouter([
 ]);
 
 function Navbar() {
-  const records = useAllRecordings();
+  const { records } = useAllRecordings();
 
   const handleSearch = (recording: RecordingInfo) => {
     console.debug(recording.enName);
