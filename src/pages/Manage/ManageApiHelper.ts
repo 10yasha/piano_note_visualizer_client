@@ -3,7 +3,7 @@ import api, { handleErrorWrapper } from "../../api/api";
 import { RecordingInfo, ExtraTag } from "../../types/GeneralTypes";
 
 export const addRecording = async (newRecording: RecordingInfo) => {
-  var recordingId: number;
+  let recordingId: number;
   // add main info
   const mainInfo = {
     url: newRecording.url,
