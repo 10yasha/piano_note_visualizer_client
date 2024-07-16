@@ -2,9 +2,14 @@ import { Link } from "react-router-dom";
 import { useAllRecordings } from "../../hooks/useAllRecordings";
 
 import "./BrowsePage.css";
+import { useEffect } from "react";
 
 export default function BrowsePage() {
-  const { records } = useAllRecordings();
+  const { records, fetchRecordings } = useAllRecordings();
+
+  useEffect(() => {
+    fetchRecordings();
+  }, []);
 
   return (
     <div className="browse-page">

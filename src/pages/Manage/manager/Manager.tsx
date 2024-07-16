@@ -17,6 +17,10 @@ export default function Manager({
     await fetchRecordings();
   };
 
+  const handleEdit = async (record: RecordingInfo) => {
+    console.log(record);
+  };
+
   useEffect(() => {
     fetchRecordings();
   }, []);
@@ -29,7 +33,14 @@ export default function Manager({
             <div className="row" key={record.id}>
               <Link to={`/browse/${record.url}`}>{record.name}</Link>
               <div className="row-buttons">
-                <button className="edit-button">Edit</button>
+                <button
+                  className="edit-button"
+                  onClick={() => {
+                    handleEdit(record);
+                  }}
+                >
+                  Edit
+                </button>
                 <button
                   className="delete-button"
                   onClick={() => {

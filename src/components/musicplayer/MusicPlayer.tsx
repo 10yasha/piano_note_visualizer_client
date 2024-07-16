@@ -5,7 +5,7 @@ import Draggable from "react-draggable";
 import AudioPlayer from "./audioplayer/AudioPlayer";
 import YoutubePlayer from "./youtubeplayer/YoutubePlayer";
 import { Player } from "../../types/GeneralTypes";
-import Button from "../button/Button";
+import WoodButton from "../woodbutton/WoodButton";
 
 import "./MusicPlayer.css";
 
@@ -69,7 +69,7 @@ export default function MusicPlayer({
           </strong>
           <div>
             <div className="btn-swap">
-              <Button onClick={swapPlayer} label="swap video/audio" />
+              <WoodButton onClick={swapPlayer} label="swap video/audio" />
             </div>
             <div className="player-container">
               {player == "youtube" ? (
